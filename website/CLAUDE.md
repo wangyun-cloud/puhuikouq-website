@@ -29,3 +29,19 @@ The shadcn CLI may install v4-style components even on Next.js 14 projects. If y
 Custom colors are defined as CSS variables in `src/app/globals.css` and mapped in `tailwind.config.ts`:
 - Primary: `#1e6ba8` (medical blue)
 - Secondary/Background: `#f5f0e8` / `#faf8f5` (warm beige/cream)
+
+### Sanity Client Integration
+- `@sanity/client` and `@sanity/image-url` are installed in the website package
+- Data fetching utilities live in `src/lib/sanity.ts`
+- The client must be created **lazily** to avoid build errors when `NEXT_PUBLIC_SANITY_PROJECT_ID` is not yet configured
+- Use `isSanityConfigured()` to gracefully handle missing project ID in pages
+
+### SEO Configuration
+- Use Next.js 14 App Router native files: `robots.ts` and `sitemap.ts`
+- Metadata is configured in `src/app/layout.tsx` with OpenGraph and Twitter Card defaults
+- `next-sitemap` is installed but not actively used; prefer native `sitemap.ts` for static export
+
+### Component Composition with `@base-ui/react`
+- Base UI components use a `render` prop for custom element composition, NOT `asChild` like Radix
+- Example: `<SheetTrigger render={<Button variant="ghost">Open</Button>} />`
+- To support `asChild` on `Button`, install `@radix-ui/react-slot` and wrap with `Slot` component

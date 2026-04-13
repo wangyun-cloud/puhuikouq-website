@@ -5,6 +5,9 @@
 - Sanity Studio should be a separate package (`studio/`) because Sanity v5 requires React 19, which conflicts with Next.js 14's React 18
 - Sanity project ID can be configured via `SANITY_STUDIO_PROJECT_ID` env var in `sanity.config.ts` and `sanity.cli.ts`
 - Sanity schemas use `defineType` and `defineField` from `sanity` for type-safe schema definitions
+- Sanity `createClient` throws if `projectId` is empty; initialize the client LAZILY in `lib/sanity.ts` to keep builds green before a project ID is configured
+- `@base-ui/react` components use `render` prop for composition, NOT `asChild` like Radix (e.g., `<SheetTrigger render={<Button />} />`)
+- Next.js 14 App Router natively supports `robots.ts` and `sitemap.ts` for static export—no extra library needed
 
 ## 2026/04/13 17:17 - US-001
 - Initialized Next.js 14 project in `website/` with TypeScript, Tailwind CSS v3.4, App Router
@@ -37,4 +40,22 @@
   - Article schema includes a `quickAnswer` field (40-80 chars) for GEO optimization in US-011
   - Clinic schema has an `order` field to control display sequence on the contact page
   - Use `defineType` + `defineField` throughout for strong typing and editor support
+---
+
+## 2026/04/13 19:15 - US-003
+- Installed `@sanity/client`, `@sanity/image-url`, and `next-sitemap` in `website/`
+- Created `src/lib/sanity.ts` with lazy client initialization to avoid build errors when project ID is not configured
+- Updated `RootLayout` with semantic HTML (`header`, `main`, `footer`), comprehensive metadata, OG/Twitter cards, and viewport theme colors
+- Created `Navigation` component with desktop nav, mobile Sheet menu, phone CTA, and booking button
+- Created `Footer` component with brand info, quick links, services, legal section, and ICP placeholder
+- Added `robots.ts` (allowing all crawlers) and `sitemap.ts` with all planned routes
+- Created `/sanity-test` page to verify Sanity data fetching with graceful fallback when unconfigured
+- Updated `Button` component to support `asChild` via `@radix-ui/react-slot`
+- Typecheck passes, lint passes, build succeeds, static export verified in `dist/`
+- Files changed: `website/src/lib/sanity.ts`, `website/src/components/navigation.tsx`, `website/src/components/footer.tsx`, `website/src/app/layout.tsx`, `website/src/app/robots.ts`, `website/src/app/sitemap.ts`, `website/src/app/sanity-test/page.tsx`, `website/src/components/ui/button.tsx`, `website/package.json`, `website/CLAUDE.md`
+- **Learnings for future iterations:**
+  - `@base-ui/react` components use `render` prop for composition, not `asChild` like Radix (e.g., `<SheetTrigger render={<Button />} />`)
+  - Sanity `createClient` throws if `projectId` is empty, so the client MUST be initialized lazily in `lib/sanity.ts` to keep builds green before a project ID is set
+  - Next.js 14 App Router natively supports `robots.ts` and `sitemap.ts`—no need for `next-sitemap` for basic static exports
+  - Navigation/footer patterns use the medical blue (`text-primary`) + warm beige (`bg-background`) palette consistently
 ---
