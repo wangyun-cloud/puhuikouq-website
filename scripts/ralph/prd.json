@@ -1,0 +1,221 @@
+{
+  "project": "上海普惠口腔官网",
+  "branchName": "ralph/dental-website",
+  "description": "上海普惠口腔品牌官网 - Next.js + Sanity CMS 多分店口腔诊所网站",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Initialize Next.js frontend and design system",
+      "description": "As a developer, I need to set up the Next.js project with proper tooling and design tokens.",
+      "acceptanceCriteria": [
+        "Create Next.js 14 project in website/ with TypeScript + Tailwind CSS + App Router",
+        "Configure ESLint + Prettier",
+        "Configure next.config.js for static export",
+        "Install and configure shadcn/ui with base components (Button, Card, Sheet, Dialog)",
+        "Define design tokens in globals.css: medical blue + warm beige color palette, typography, spacing",
+        "Typecheck passes",
+        "Build succeeds"
+      ],
+      "priority": 1,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-002",
+      "title": "Initialize Sanity CMS and content schemas",
+      "description": "As a content manager, I need a CMS backend to manage website content.",
+      "acceptanceCriteria": [
+        "Initialize Sanity v3 studio in studio/ directory",
+        "Create free Sanity project and configure production dataset",
+        "Define content schemas: article, doctor, clinic, booking, banner",
+        "Sanity Studio starts successfully and shows all content types",
+        "Add at least 1 sample clinic record for testing"
+      ],
+      "priority": 2,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-003",
+      "title": "Connect Next.js to Sanity and build global layout",
+      "description": "As a user, I need to see a professional website layout and navigation.",
+      "acceptanceCriteria": [
+        "Install @sanity/client and configure data fetching in lib/sanity.ts",
+        "Create RootLayout with semantic HTML structure",
+        "Create responsive Navigation component with mobile menu",
+        "Create Footer component with ICP placeholder and contact placeholder",
+        "Configure default metadata, robots.txt (allow AI crawlers), sitemap.ts, Open Graph and Twitter Card",
+        "Verify sample Sanity data renders correctly on a test page",
+        "Typecheck passes",
+        "Build succeeds",
+        "Verify in browser"
+      ],
+      "priority": 3,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-004",
+      "title": "Develop homepage",
+      "description": "As a visitor, I need to understand the clinic and find what I'm looking for.",
+      "acceptanceCriteria": [
+        "Homepage displays institutional name: 上海普惠口腔",
+        "Banner carousel reads from Sanity banner documents",
+        "Brief objective introduction without absolute terms",
+        "Service category entry points",
+        "Doctor team preview (reads from Sanity doctors)",
+        "Contact info and business hours placeholders",
+        "Booking CTA button",
+        "Add LocalBusiness Schema.org structured data",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 4,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-005",
+      "title": "Develop service page template and core service pages",
+      "description": "As a visitor, I need to learn about dental services.",
+      "acceptanceCriteria": [
+        "Create reusable service page template component",
+        "Template sections: What is XXX, Applicable situations, Treatment process, Precautions, FAQ",
+        "Develop Implant page (/services/implant) with FAQs: 种植牙能用多久, 种植牙疼吗, 种植牙多少钱",
+        "Develop Orthodontics page (/services/orthodontics) with FAQs: 隐形矫正价格, 矫正要多久, 成人还能矫正吗",
+        "Use objective descriptions without efficacy claims",
+        "Add FAQPage Schema.org markup to both service pages",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 5,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-006",
+      "title": "Develop remaining service pages, doctors page, and contact page",
+      "description": "As a visitor, I need to see all services, doctor credentials, and clinic locations.",
+      "acceptanceCriteria": [
+        "Develop Restoration page (/services/restoration)",
+        "Develop Periodontal page (/services/periodontal)",
+        "Develop Pediatric page (/services/pediatric)",
+        "Doctors page displays cards with photo, name, education, qualifications, specialties, years of practice from Sanity",
+        "No subjective terms like '专家' or '权威' used",
+        "Add Physician Schema.org markup",
+        "Contact page displays all 4 clinics from Sanity with address, phone, hours placeholders",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 6,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-007",
+      "title": "Develop knowledge base system",
+      "description": "As a visitor, I need to browse and read dental health educational articles.",
+      "acceptanceCriteria": [
+        "Article list page (/knowledge) reads articles from Sanity",
+        "Support category filtering (种植牙, 正畸, 口腔护理, 牙周, 儿童口腔)",
+        "Each article card shows title, excerpt, publish date, read time",
+        "Article detail page (/knowledge/[slug]) renders Portable Text content",
+        "Article detail shows 40-80 character quick answer at top for GEO optimization",
+        "Related articles recommendation section",
+        "Add ItemList Schema on list page and Article Schema on detail page",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 7,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-008",
+      "title": "Create and populate initial article content",
+      "description": "As a content manager, I need foundational articles to populate the knowledge base.",
+      "acceptanceCriteria": [
+        "Write and publish 10 educational articles in Sanity covering: implants, orthodontics, oral care, periodontal, pediatric dentistry",
+        "Each article is 1500-2500 words",
+        "Each article contains 3-5 Q&A style subheadings",
+        "Include authoritative references and statistics where applicable",
+        "Verify all articles display correctly on list and detail pages in browser",
+        "No absolute terms or efficacy claims in article content"
+      ],
+      "priority": 8,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-009",
+      "title": "Develop online booking system and guide page",
+      "description": "As a visitor, I need to submit an appointment request online.",
+      "acceptanceCriteria": [
+        "Booking form page with fields: name, phone, service, preferred date, symptoms, clinic selection",
+        "Frontend form validation",
+        "On submission, create Booking document in Sanity via API",
+        "Show success confirmation message after submission",
+        "Develop guide page (/guide) with appointment process, business hours, transportation info",
+        "Create privacy policy page compliant with personal information protection law",
+        "Typecheck passes",
+        "Verify form submission in browser and Sanity Studio"
+      ],
+      "priority": 9,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-010",
+      "title": "Develop booking admin view in Sanity Studio",
+      "description": "As a clinic staff member, I need to view and manage appointment requests in the CMS.",
+      "acceptanceCriteria": [
+        "Create dedicated Booking list view in Sanity Studio",
+        "Display key fields: name, phone, service, clinic, status, submittedAt",
+        "Support filtering by status (pending, confirmed, completed, cancelled)",
+        "Allow editing status field",
+        "Verify admin view works in browser"
+      ],
+      "priority": 10,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-011",
+      "title": "Implement GEO optimization and performance optimization",
+      "description": "As an operator, I need the site to rank well and load fast.",
+      "acceptanceCriteria": [
+        "Create llms.txt with site content overview",
+        "Ensure all FAQ pages use FAQPage Schema markup",
+        "Ensure all article pages use Article Schema markup",
+        "Optimize images with Next.js Image component and lazy loading",
+        "Set fetchpriority='high' only for hero images",
+        "Core pages pre-rendered for static export",
+        "Lighthouse performance score > 90",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 11,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-012",
+      "title": "Final compliance review and delivery preparation",
+      "description": "As a project owner, I need to ensure the website is compliant and ready for launch.",
+      "acceptanceCriteria": [
+        "Check site-wide for absolute terms (最佳, 第一, 根治, etc.)",
+        "Check for efficacy claims (成功率 99%, etc.)",
+        "Check no patient testimonials or before/after comparison images",
+        "Ensure institutional name consistency (上海普惠口腔)",
+        "Add ICP备案号 placeholder to footer",
+        "Ensure all pages have unique title and meta description",
+        "Static export build succeeds with zero errors",
+        "Verify all pages display correctly in browser",
+        "Confirm no console errors on critical pages"
+      ],
+      "priority": 12,
+      "passes": false,
+      "notes": ""
+    }
+  ]
+}
