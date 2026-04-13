@@ -2,6 +2,9 @@
 - Use system font stack (PingFang SC, Microsoft YaHei) instead of next/font/google to avoid network failures during static export builds
 - shadcn CLI may install v4-style components on Next.js 14; ensure globals.css uses standard Tailwind v3 `@tailwind` directives
 - Custom colors defined as CSS variables in globals.css and mapped in tailwind.config.ts
+- Sanity Studio should be a separate package (`studio/`) because Sanity v5 requires React 19, which conflicts with Next.js 14's React 18
+- Sanity project ID can be configured via `SANITY_STUDIO_PROJECT_ID` env var in `sanity.config.ts` and `sanity.cli.ts`
+- Sanity schemas use `defineType` and `defineField` from `sanity` for type-safe schema definitions
 
 ## 2026/04/13 17:17 - US-001
 - Initialized Next.js 14 project in `website/` with TypeScript, Tailwind CSS v3.4, App Router
@@ -15,4 +18,23 @@
   - `create-next-app` creates a nested `.git` directory which must be removed before committing to the main repo
   - When using static export, avoid `next/font/google` due to build-time network font downloads
   - The `website/.gitignore` should exclude `dist/` (build output)
+---
+
+## 2026/04/13 18:03 - US-002
+- Initialized Sanity v3 studio in `studio/` with React 19, Sanity 5.20, `@sanity/vision`
+- Created `sanity.config.ts`, `sanity.cli.ts`, `tsconfig.json`, and package scripts
+- Defined content schemas: `article`, `doctor`, `clinic`, `booking`, `banner` in `studio/schemas/documents/`
+- Build passes (`npm run build` succeeds) and dev server starts successfully on port 3334
+- Sanity Studio displays all 5 content types in the structure tool
+- Added sample clinic data file at `studio/sample-data/clinic-sample.ndjson` ready for import
+- TypeScript typechecking passes for all schema files
+- Files changed: `studio/` (entire CMS scaffold), `studio/CLAUDE.md`
+- **Learnings for future iterations:**
+  - Sanity v5 requires React 19, so the studio must be a separate package from the Next.js 14 frontend
+  - `sanity init --project-name` requires `--organization <id>` in unattended mode; manual scaffolding is more reliable for automation
+  - The studio can start with a placeholder `projectId` to verify schemas, but actual data reads/writes require a real Sanity project ID
+  - Booking schema includes a `status` field (pending/confirmed/completed/cancelled) for the admin view in US-010
+  - Article schema includes a `quickAnswer` field (40-80 chars) for GEO optimization in US-011
+  - Clinic schema has an `order` field to control display sequence on the contact page
+  - Use `defineType` + `defineField` throughout for strong typing and editor support
 ---
