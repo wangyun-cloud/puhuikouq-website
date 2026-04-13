@@ -195,3 +195,22 @@
   - Preconnecting to the Sanity CDN in layout `<head>` is a simple but effective performance win for sites using Sanity images
 ---
 
+## 2026/04/13 20:20 - US-012
+- Completed site-wide compliance review for absolute terms, efficacy claims, testimonials, and before/after images
+- Verified no prohibited absolute terms (最佳, 根治, 专家, 权威, etc.) or efficacy claims (成功率 99%, etc.) in content
+- Confirmed no patient testimonials or before/after comparison images exist in the project
+- Verified institutional name `上海普惠口腔` is consistent across all pages and metadata
+- Footer already contains ICP备案号 placeholder: `沪ICP备XXXXXXXX号-1`
+- Added explicit `export const metadata` to homepage (`website/src/app/page.tsx`) and sanity-test page (`website/src/app/sanity-test/page.tsx`)
+- Fixed mixed English/Chinese text on homepage: `patient experience` → `患者就诊体验`
+- TypeScript (`npx tsc --noEmit`) passes with zero errors
+- ESLint (`npm run lint`) passes with zero warnings
+- Static export build succeeds with all 30 pages pre-rendered and zero errors
+- Files changed: `website/src/app/page.tsx`, `website/src/app/sanity-test/page.tsx`, `prd.json`, `progress.txt`
+- **Learnings for future iterations:**
+  - Even when a layout provides default metadata, every `page.tsx` should export explicit metadata for compliance and SEO clarity
+  - Use `grep -r` with Chinese absolute term patterns for quick compliance sweeps before delivery
+  - Mixed-language copy (e.g., English words in Chinese content) is easy to miss and should be checked during final review
+  - The banner carousel and doctor cards already handle missing Sanity images with CSS gradient fallbacks, so no 404 console errors occur from placeholder image paths
+---
+

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -188,6 +189,12 @@ const services = [
   },
 ];
 
+export const metadata: Metadata = {
+  title: "上海普惠口腔 - 专业口腔医疗服务",
+  description:
+    "上海普惠口腔提供种植牙、牙齿矫正、牙齿修复、牙周治疗、儿童口腔等专业口腔医疗服务，用心呵护每一颗牙齿，守护全家口腔健康。",
+};
+
 export default async function HomePage() {
   let banners: BannerDoc[] = [];
   let doctors: DoctorDoc[] = [];
@@ -330,7 +337,7 @@ export default async function HomePage() {
             </h1>
             <p className="mb-8 text-lg leading-relaxed text-muted-foreground">
               上海普惠口腔致力于为社区居民提供规范、专业的口腔医疗服务。我们配备完善的诊疗设备，
-              注重 patient experience，希望能够帮助更多人维护口腔健康、预防和解决口腔问题。
+              注重患者就诊体验，希望能够帮助更多人维护口腔健康、预防和解决口腔问题。
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <Button asChild size="lg">

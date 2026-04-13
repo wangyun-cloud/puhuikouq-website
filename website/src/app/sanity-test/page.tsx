@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import { sanityFetch, isSanityConfigured } from "@/lib/sanity";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+export const metadata: Metadata = {
+  title: "Sanity 数据连接测试",
+  description: "上海普惠口腔 Sanity CMS 数据连接测试页面。",
+};
 
 interface Clinic {
   _id: string;

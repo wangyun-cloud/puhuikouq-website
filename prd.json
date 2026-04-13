@@ -214,8 +214,8 @@
         "Confirm no console errors on critical pages"
       ],
       "priority": 12,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Compliance review completed. No absolute medical claims or efficacy claims found. No testimonials or before/after images. Institutional name consistent throughout. ICP placeholder already present in footer. Added explicit metadata to homepage and sanity-test page. Fixed mixed English/Chinese text ('patient experience' → '患者就诊体验'). Static export builds 30 pages with zero errors. TypeScript and lint pass."
     }
   ]
 }
