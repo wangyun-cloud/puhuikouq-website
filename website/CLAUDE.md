@@ -114,3 +114,26 @@ When fallback data becomes large (e.g., 10+ knowledge base articles), extract it
 - Allows reuse across list page (`/knowledge/page.tsx`) and detail page (`/knowledge/[slug]/page.tsx`)
 - Use helper functions to generate Portable Text blocks to reduce repetition
 - Export both the full article record (for detail pages) and a stripped list variant (for list pages)
+
+### Forms with Static Export
+Server Actions are **not supported** with `output: 'export'` in Next.js 14. For forms that need to write data (e.g., creating a Sanity document), use this pattern:
+
+1. Create an API route (`app/api/xxx/route.ts`) that handles the POST request
+2. Have the client component form submit via `fetch` to the API route
+3. The API route performs the Sanity write using `getSanityWriteClient()` with a server-side token
+
+```tsx
+// Client form component
+async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  event.preventDefault();
+  const res = await fetch("/api/booking", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const result = await res.json();
+  // handle success/error
+}
+```
+
+This keeps the write token server-side while still working with static export builds.

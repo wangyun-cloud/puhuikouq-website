@@ -4,8 +4,10 @@ import imageUrlBuilder from "@sanity/image-url";
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "";
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
 const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || "2024-04-13";
+const writeToken = process.env.SANITY_API_WRITE_TOKEN || "";
 
 let _client: SanityClient | undefined;
+let _writeClient: SanityClient | undefined;
 
 function getSanityClient(): SanityClient {
   if (!_client) {
@@ -18,6 +20,20 @@ function getSanityClient(): SanityClient {
     });
   }
   return _client;
+}
+
+export function getSanityWriteClient(): SanityClient {
+  if (!_writeClient) {
+    _writeClient = createClient({
+      projectId,
+      dataset,
+      apiVersion,
+      useCdn: false,
+      token: writeToken,
+      perspective: "published",
+    });
+  }
+  return _writeClient;
 }
 
 let _imageBuilder: ReturnType<typeof imageUrlBuilder> | undefined;
