@@ -83,8 +83,9 @@ export const booking = defineType({
       service: 'service',
       status: 'status',
       submittedAt: 'submittedAt',
+      clinicName: 'clinic.name',
     },
-    prepare({ name, phone, service, status, submittedAt }) {
+    prepare({ name, phone, service, status, submittedAt, clinicName }) {
       const serviceMap: Record<string, string> = {
         implant: '种植牙',
         orthodontics: '牙齿矫正',
@@ -102,7 +103,7 @@ export const booking = defineType({
       }
       return {
         title: `${name} · ${phone}`,
-        subtitle: `${serviceMap[service] || service} · ${statusMap[status] || status} · ${submittedAt ? new Date(submittedAt).toLocaleString('zh-CN') : ''}`,
+        subtitle: `${serviceMap[service] || service} · ${clinicName ? `${clinicName} · ` : ''}${statusMap[status] || status} · ${submittedAt ? new Date(submittedAt).toLocaleString('zh-CN') : ''}`,
       }
     },
   },

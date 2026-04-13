@@ -2,6 +2,7 @@ import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './schemas'
+import { structure } from './structure'
 
 // NOTE: Replace `projectId` with your actual Sanity project ID.
 // Run `npx sanity@latest manage` after creating a project to retrieve it,
@@ -13,7 +14,7 @@ export default defineConfig({
   projectId: process.env.SANITY_STUDIO_PROJECT_ID || 'YOUR_PROJECT_ID',
   dataset: 'production',
 
-  plugins: [structureTool(), visionTool()],
+  plugins: [structureTool({ structure }), visionTool()],
 
   schema: {
     types: schemaTypes,

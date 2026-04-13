@@ -34,8 +34,18 @@ All schemas are defined in `schemas/documents/`:
 | `booking` | Online appointment requests |
 | `banner` | Homepage carousel slides |
 
+## Custom Desk Structure
+
+The studio uses a custom desk structure defined in `structure/index.ts` via `structureTool({ structure })`. Example patterns:
+
+- Create a dedicated admin section with `S.listItem().title('...').child(S.list()...)`
+- Filter document lists by status using `S.documentTypeList('booking').filter('_type == "booking" && status == "pending"')`
+- Exclude default document type list items with `S.documentTypeListItems().filter((item) => item.getId() !== 'booking')`
+- Sort lists by date with `.defaultOrdering([{ field: 'submittedAt', direction: 'desc' }])`
+
 ## Known Constraints
 
 - The `production` dataset is used by default.
 - Images uploaded through Sanity Studio are stored in Sanity's asset CDN.
 - The `booking` document has a read-only `submittedAt` field that auto-populates on creation.
+- Reference fields can be dereferenced in preview `select` using dotted paths like `clinic.name`.
