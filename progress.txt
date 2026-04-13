@@ -59,3 +59,20 @@
   - Next.js 14 App Router natively supports `robots.ts` and `sitemap.ts`—no need for `next-sitemap` for basic static exports
   - Navigation/footer patterns use the medical blue (`text-primary`) + warm beige (`bg-background`) palette consistently
 ---
+
+## 2026/04/13 19:45 - US-004
+- Developed full homepage with banner carousel, institutional introduction, service category grid, doctor team preview, and contact/CTA section
+- Created `BannerCarousel` client component in `website/src/components/home/banner-carousel.tsx` with auto-rotation, prev/next controls, and dot indicators
+- Homepage fetches banners, doctors, and clinics from Sanity with graceful fallback data when unconfigured
+- Service grid includes 5 categories: 种植牙, 牙齿矫正, 牙齿修复, 牙周治疗, 儿童口腔
+- Doctor preview displays up to 4 doctors with photo, name, specialties, and years of practice
+- Added LocalBusiness Schema.org JSON-LD structured data with address, phone, and opening hours
+- Booking CTA buttons link to `/booking` and phone number
+- Typecheck passes, build succeeds, static export verified
+- Files changed: `website/src/app/page.tsx`, `website/src/components/home/banner-carousel.tsx`
+- **Learnings for future iterations:**
+  - When Sanity images may be missing, use conditional rendering with CSS gradient fallbacks instead of broken `<Image>` placeholders
+  - The ` medicinal-blue to medical-blue-light` gradient serves as a clean fallback for both banners and doctor photos
+  - Keep banner carousel as a client component (state for current slide) while the page remains a server component fetching Sanity data
+  - For Schema.org in Next.js 14 App Router, inject JSON-LD via `<script type="application/ld+json">` directly in the RSC
+---

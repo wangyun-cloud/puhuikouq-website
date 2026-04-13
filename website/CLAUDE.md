@@ -45,3 +45,28 @@ Custom colors are defined as CSS variables in `src/app/globals.css` and mapped i
 - Base UI components use a `render` prop for custom element composition, NOT `asChild` like Radix
 - Example: `<SheetTrigger render={<Button variant="ghost">Open</Button>} />`
 - To support `asChild` on `Button`, install `@radix-ui/react-slot` and wrap with `Slot` component
+
+### Graceful Image Fallbacks for Missing Sanity Assets
+When Sanity is not configured or images are missing, avoid broken `<Image>` placeholders. Use CSS gradient fallbacks instead:
+
+```tsx
+{hasImage ? (
+  <Image src={imageUrl} alt={alt} fill unoptimized />
+) : (
+  <div className="absolute inset-0 bg-gradient-to-br from-medical-blue via-medical-blue-light to-warm-beige" />
+)}
+```
+
+For doctor/avatar placeholders, render initials on a gradient background rather than a broken image.
+
+### Schema.org JSON-LD in App Router
+Inject structured data directly in React Server Components using a `<script>` tag:
+
+```tsx
+<script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify(localBusinessSchema),
+  }}
+/>
+```

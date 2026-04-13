@@ -71,8 +71,8 @@
         "Verify in browser"
       ],
       "priority": 4,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Homepage implemented with banner carousel, service grid, doctor preview, contact CTA, and LocalBusiness schema. Fallback data renders when Sanity is unconfigured."
     },
     {
       "id": "US-005",
