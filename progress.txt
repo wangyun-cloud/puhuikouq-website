@@ -1,4 +1,7 @@
 ## Codebase Patterns
+- `next.config.mjs` with `images: { unoptimized: true }` makes individual `unoptimized` props redundant; still add `sizes` and `loading` props for better semantics
+- Add `fetchPriority="high"` to hero images alongside `priority` prop for optimal LCP
+- Preconnect to `https://cdn.sanity.io` in layout `<head>` to improve Sanity image loading performance
 - Use system font stack (PingFang SC, Microsoft YaHei) instead of next/font/google to avoid network failures during static export builds
 - shadcn CLI may install v4-style components on Next.js 14; ensure globals.css uses standard Tailwind v3 `@tailwind` directives
 - Custom colors defined as CSS variables in globals.css and mapped in tailwind.config.ts
@@ -176,3 +179,19 @@
   - Reference fields can be dereferenced in preview `select` using dotted paths like `clinic.name`
   - `defaultOrdering([{ field: 'submittedAt', direction: 'desc' }])` ensures the most recent items appear first in admin lists
 ---
+
+## 2026/04/13 22:45 - US-011
+- Created `website/public/llms.txt` with comprehensive site content overview for LLM crawlers
+- Verified all 5 service pages use FAQPage Schema markup via `ServicePageTemplate`
+- Verified all article detail pages use Article Schema markup and list page uses ItemList Schema
+- Optimized images: added `fetchPriority="high"` to first banner image, `loading="lazy"` and `sizes` props to below-fold images (doctors, clinics, article images)
+- Added `<link rel="preconnect">` and `<link rel="dns-prefetch">` for `cdn.sanity.io` in `layout.tsx`
+- Removed redundant `unoptimized` props from individual `<Image>` components since `next.config.mjs` already sets `images.unoptimized: true`
+- Static export build succeeds with all 30 pages pre-rendered; typecheck and lint pass
+- Files changed: `website/public/llms.txt`, `website/src/components/home/banner-carousel.tsx`, `website/src/app/page.tsx`, `website/src/app/doctors/page.tsx`, `website/src/app/contact/page.tsx`, `website/src/components/portable-text.tsx`, `website/src/app/layout.tsx`, `prd.json`
+- **Learnings for future iterations:**
+  - Even with `images.unoptimized: true` globally, adding `sizes` and `loading` props to `<Image>` improves Lighthouse semantics and accessibility scores
+  - `fetchPriority` prop on Next.js Image complements `priority` for better LCP on hero images
+  - Preconnecting to the Sanity CDN in layout `<head>` is a simple but effective performance win for sites using Sanity images
+---
+

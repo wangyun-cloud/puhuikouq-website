@@ -81,6 +81,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN" className={cn("font-sans")}>
+      <head>
+        <link rel="preconnect" href="https://cdn.sanity.io" />
+        <link rel="dns-prefetch" href="https://cdn.sanity.io" />
+      </head>
       <body className="flex min-h-screen flex-col bg-background text-foreground antialiased">
         <Navigation />
         <main className="flex-1">{children}</main>

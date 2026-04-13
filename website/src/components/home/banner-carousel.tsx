@@ -63,7 +63,8 @@ export function BannerCarousel({ banners }: BannerCarouselProps) {
                   fill
                   className="object-cover"
                   priority={index === 0}
-                  unoptimized
+                  fetchPriority={index === 0 ? "high" : "auto"}
+                  sizes="100vw"
                 />
               ) : (
                 <div className="absolute inset-0 bg-gradient-to-br from-medical-blue via-medical-blue-light to-warm-beige" />

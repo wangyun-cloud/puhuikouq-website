@@ -79,7 +79,8 @@ const components: Partial<PortableTextReactComponents> = {
                 alt={value.alt || "文章配图"}
                 fill
                 className="object-cover"
-                unoptimized
+                loading="lazy"
+                sizes="(max-width: 768px) 100vw, 800px"
               />
             </div>
           ) : (

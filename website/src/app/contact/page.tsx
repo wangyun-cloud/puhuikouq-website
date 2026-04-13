@@ -146,7 +146,8 @@ export default async function ContactPage() {
                       alt={clinic.imageAlt}
                       fill
                       className="object-cover"
-                      unoptimized
+                      loading="lazy"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-medical-blue to-medical-blue-light">

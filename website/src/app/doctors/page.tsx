@@ -179,7 +179,8 @@ export default async function DoctorsPage() {
                       alt={doctor.photoAlt}
                       fill
                       className="object-cover transition-transform duration-500 hover:scale-105"
-                      unoptimized
+                      loading="lazy"
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-medical-blue to-medical-blue-light">

@@ -195,8 +195,8 @@
         "Verify in browser"
       ],
       "priority": 11,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Created llms.txt with site content overview. All FAQ pages use FAQPage Schema markup via ServicePageTemplate, all article pages use Article Schema markup. Images optimized with Next.js Image component, lazy loading on below-fold images, fetchpriority='high' on hero banner. Added preconnect for Sanity CDN. Static export build succeeds with 30 pages. Typecheck and lint pass."
     },
     {
       "id": "US-012",

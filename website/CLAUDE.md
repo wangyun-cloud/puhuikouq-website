@@ -51,13 +51,49 @@ When Sanity is not configured or images are missing, avoid broken `<Image>` plac
 
 ```tsx
 {hasImage ? (
-  <Image src={imageUrl} alt={alt} fill unoptimized />
+  <Image src={imageUrl} alt={alt} fill sizes="100vw" />
 ) : (
   <div className="absolute inset-0 bg-gradient-to-br from-medical-blue via-medical-blue-light to-warm-beige" />
 )}
 ```
 
 For doctor/avatar placeholders, render initials on a gradient background rather than a broken image.
+
+### Image Optimization for Performance
+`next.config.mjs` already sets `images: { unoptimized: true }` globally for static export compatibility. Still include `sizes` and `loading` props on `<Image>` components for better semantics and performance:
+
+```tsx
+// Hero image: priority + fetchPriority high for LCP
+<Image
+  src={heroImageUrl}
+  alt="Hero banner"
+  fill
+  priority
+  fetchPriority="high"
+  sizes="100vw"
+/>
+
+// Below-fold image: lazy loading with responsive sizes
+<Image
+  src={imageUrl}
+  alt="Description"
+  fill
+  loading="lazy"
+  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+/>
+```
+
+Add preconnect hints for the Sanity CDN in `layout.tsx` to improve image loading speed:
+
+```tsx
+<html lang="zh-CN">
+  <head>
+    <link rel="preconnect" href="https://cdn.sanity.io" />
+    <link rel="dns-prefetch" href="https://cdn.sanity.io" />
+  </head>
+  ...
+</html>
+```
 
 ### Schema.org JSON-LD in App Router
 Inject structured data directly in React Server Components using a `<script>` tag:
