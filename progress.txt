@@ -7,6 +7,7 @@
 - Sanity schemas use `defineType` and `defineField` from `sanity` for type-safe schema definitions
 - Sanity `createClient` throws if `projectId` is empty; initialize the client LAZILY in `lib/sanity.ts` to keep builds green before a project ID is configured
 - `@base-ui/react` components use `render` prop for composition, NOT `asChild` like Radix (e.g., `<SheetTrigger render={<Button />} />`)
+- `@base-ui/react` Accordion uses `multiple` boolean prop, NOT `type="multiple"` like Radix
 - Next.js 14 App Router natively supports `robots.ts` and `sitemap.ts` for static export—no extra library needed
 
 ## 2026/04/13 17:17 - US-001
@@ -75,4 +76,20 @@
   - The ` medicinal-blue to medical-blue-light` gradient serves as a clean fallback for both banners and doctor photos
   - Keep banner carousel as a client component (state for current slide) while the page remains a server component fetching Sanity data
   - For Schema.org in Next.js 14 App Router, inject JSON-LD via `<script type="application/ld+json">` directly in the RSC
+---
+
+## 2026/04/13 20:08 - US-005
+- Created reusable `ServicePageTemplate` component in `website/src/components/services/service-template.tsx`
+- Template includes sections: hero banner, What is XXX, Applicable situations, Treatment process, Precautions, FAQ accordion, and booking CTA
+- Developed Implant page (`/services/implant`) with objective descriptions and FAQPage Schema.org markup
+- Developed Orthodontics page (`/services/orthodontics`) with objective descriptions and FAQPage Schema.org markup
+- Installed `@base-ui/react` Accordion component for FAQ sections
+- All content avoids absolute terms and efficacy claims; uses cautious, objective language
+- Typecheck passes, lint passes, build succeeds, static export verified in `dist/`
+- Files changed: `website/src/components/services/service-template.tsx`, `website/src/app/services/implant/page.tsx`, `website/src/app/services/orthodontics/page.tsx`, `website/src/components/ui/accordion.tsx`
+- **Learnings for future iterations:**
+  - `@base-ui/react` Accordion uses `multiple` boolean prop, NOT `type="multiple"` like Radix
+  - Service pages follow a consistent template pattern: hero → what is → applicable → process → precautions → FAQ → CTA
+  - FAQPage Schema is injected per-page via JSON-LD in the RSC, using the same FAQ data that renders the accordion
+  - Treatment process timeline uses a mobile-first alternating layout with a central vertical line on desktop
 ---
