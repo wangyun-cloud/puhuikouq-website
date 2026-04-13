@@ -160,3 +160,19 @@
   - `useActionState` is React 19 only; on React 18 use `useFormState` + `useFormStatus` from `react-dom`
   - For Chinese privacy policies, reference 《中华人民共和国个人信息保护法》explicitly for compliance credibility
 ---
+
+## 2026/04/13 21:50 - US-010
+- Created custom desk structure in `studio/structure/index.ts` with dedicated `预约管理` (Booking Management) section
+- Added filtered sub-views for all booking statuses: 全部预约 (all), 待处理 (pending), 已确认 (confirmed), 已完成 (completed), 已取消 (cancelled)
+- Configured default ordering by `submittedAt` descending so newest bookings appear first
+- Updated `booking` schema preview to include `clinic.name` reference, showing all key fields: name, phone, service, clinic, status, submittedAt
+- Updated `sanity.config.ts` to use the custom structure builder
+- Studio build passes successfully; dev server starts and serves the admin view
+- Files changed: `studio/structure/index.ts`, `studio/sanity.config.ts`, `studio/schemas/documents/booking.ts`, `studio/CLAUDE.md`
+- **Learnings for future iterations:**
+  - Sanity v3 custom desk structures are configured via `structureTool({ structure })` in `sanity.config.ts`
+  - Use `S.documentTypeList('booking').filter('_type == "booking" && status == "pending"')` for filtered admin views
+  - Exclude default document type list items with `S.documentTypeListItems().filter((item) => item.getId() !== 'booking')`
+  - Reference fields can be dereferenced in preview `select` using dotted paths like `clinic.name`
+  - `defaultOrdering([{ field: 'submittedAt', direction: 'desc' }])` ensures the most recent items appear first in admin lists
+---

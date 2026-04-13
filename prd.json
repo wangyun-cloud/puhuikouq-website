@@ -176,8 +176,8 @@
         "Verify admin view works in browser"
       ],
       "priority": 10,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Custom desk structure created with dedicated '预约管理' section. Booking preview enhanced to show clinic name. Filtered sub-views for all statuses (pending, confirmed, completed, cancelled) with default ordering by submittedAt desc. Studio build passes and dev server verified."
     },
     {
       "id": "US-011",
