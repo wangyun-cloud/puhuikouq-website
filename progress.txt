@@ -93,3 +93,35 @@
   - FAQPage Schema is injected per-page via JSON-LD in the RSC, using the same FAQ data that renders the accordion
   - Treatment process timeline uses a mobile-first alternating layout with a central vertical line on desktop
 ---
+
+## 2026/04/13 11:22 - US-006
+- Created Restoration page (`/services/restoration`) with FAQPage Schema.org markup and objective descriptions
+- Created Periodontal page (`/services/periodontal`) with FAQPage Schema.org markup and objective descriptions
+- Created Pediatric page (`/services/pediatric`) with FAQPage Schema.org markup and objective descriptions
+- Created Doctors page (`/doctors`) displaying cards with photo, name, education, qualifications, specialties, years of practice; includes Physician Schema.org markup
+- Created Contact page (`/contact`) displaying all 4 clinics with address, phone, hours, and map links; includes fallback data when Sanity is unconfigured
+- All pages use fallback data patterns consistent with existing pages
+- TypeScript typecheck passes, lint passes, static export build succeeds with 15 pages
+- Files changed: `website/src/app/services/restoration/page.tsx`, `website/src/app/services/periodontal/page.tsx`, `website/src/app/services/pediatric/page.tsx`, `website/src/app/doctors/page.tsx`, `website/src/app/contact/page.tsx`
+- **Learnings for future iterations:**
+  - Physician Schema.org markup uses `@type: "Physician"` with `medicalSpecialty`, `worksFor`, `alumniOf`, and `hasCredential` fields
+  - Doctors page follows the same card grid pattern as the homepage doctor preview but with expanded details (education, qualifications)
+  - Contact page uses a 16:9 aspect ratio placeholder for clinic images with MapPin icon fallback
+  - All service pages reuse the `ServicePageTemplate` component; only the data object and metadata differ
+---
+
+## 2026/04/13 12:35 - US-007
+- Created knowledge article list page (`/knowledge`) with category filtering and ItemList Schema.org markup
+- Created knowledge article detail page (`/knowledge/[slug]`) with Portable Text rendering, quick answer GEO optimization, related articles, and Article Schema.org markup
+- Installed `@portabletext/react` for rendering Sanity Portable Text content with custom components for headings, lists, marks, and images
+- Created client-side `KnowledgeList` component for category filtering because `searchParams` cannot be used in server components during static export
+- Added 5 fallback articles with realistic portable text content for testing when Sanity is unconfigured
+- Updated `generateStaticParams` in detail page to produce static paths from both Sanity data and fallback articles
+- Typecheck passes, lint passes, static export build succeeds with 21 pages
+- Files changed: `website/src/app/knowledge/page.tsx`, `website/src/app/knowledge/knowledge-list.tsx`, `website/src/app/knowledge/[slug]/page.tsx`, `website/src/components/portable-text.tsx`, `website/package.json`
+- **Learnings for future iterations:**
+  - In Next.js 14 static export, `searchParams` cannot be accessed in server components. Use a client component with `useSearchParams` wrapped in `<Suspense>`
+  - `@portabletext/react` warns about unknown block styles like `bullet` and `number` even though they're handled by `list`/`listItem`; add them to `components.block` to silence warnings
+  - Sanity article references in GROQ can be dereferenced with `relatedArticles[]->` to fetch full related article documents
+  - The `generateStaticParams` function should handle both Sanity-configured and unconfigured states to keep builds green
+---

@@ -108,8 +108,8 @@
         "Verify in browser"
       ],
       "priority": 6,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Restoration, Periodontal, and Pediatric service pages implemented with FAQPage Schema.org markup. Doctors page displays full credentials with Physician Schema.org markup. Contact page shows all 4 clinics with fallback data. Typecheck and build pass."
     },
     {
       "id": "US-007",
@@ -127,8 +127,8 @@
         "Verify in browser"
       ],
       "priority": 7,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Knowledge list and detail pages implemented with Portable Text rendering, category filtering, quick answer GEO optimization, related articles, and Schema.org markup. Typecheck, lint, and build pass."
     },
     {
       "id": "US-008",

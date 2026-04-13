@@ -70,3 +70,40 @@ Inject structured data directly in React Server Components using a `<script>` ta
   }}
 />
 ```
+
+### Static Export and `searchParams`
+In Next.js 14 with `output: 'export'`, `searchParams` cannot be accessed in server components because it causes a dynamic rendering bailout. Use a client component with `useSearchParams` wrapped in `<Suspense>`:
+
+```tsx
+// page.tsx (server component)
+import { Suspense } from "react";
+
+<Suspense fallback={null}>
+  <FilterClientComponent />
+</Suspense>
+```
+
+### Portable Text Rendering
+- Install `@portabletext/react` for rendering Sanity Portable Text content
+- Define custom components for `block`, `list`, `listItem`, `marks`, and `types`
+- `@portabletext/react` warns about unknown block styles like `bullet` and `number` even though they're handled by `list`/`listItem`. Add them to `components.block` to silence warnings:
+
+```tsx
+block: {
+  normal: ({ children }) => <p>{children}</p>,
+  bullet: ({ children }) => <>{children}</>,
+  number: ({ children }) => <>{children}</>,
+}
+```
+
+### GROQ Reference Dereferencing
+Fetch full referenced documents in a single query using the `->` operator:
+
+```groq
+*[_type == "article" && slug.current == $slug][0] {
+  ...,
+  relatedArticles[]-> {
+    _id, title, slug { current }, excerpt
+  }
+}
+```
