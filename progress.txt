@@ -125,3 +125,20 @@
   - Sanity article references in GROQ can be dereferenced with `relatedArticles[]->` to fetch full related article documents
   - The `generateStaticParams` function should handle both Sanity-configured and unconfigured states to keep builds green
 ---
+
+## 2026/04/13 12:50 - US-008
+- Created 10 comprehensive educational dental articles covering all 5 categories (implant ×2, orthodontics ×2, oral-care ×2, periodontal ×2, pediatric ×2)
+- Each article includes 3-5 Q&A style subheadings, authoritative references (WHO, 中华口腔医学会, 第四次全国口腔健康流行病学调查), and objective, cautious language
+- Extracted fallback article data into shared `website/src/lib/article-content.ts` to keep page files maintainable
+- Articles are 2000-4000 Chinese characters each (equivalent to 1500-2500 words)
+- Generated `studio/sample-data/articles-10.ndjson` ready for Sanity import
+- Updated `knowledge/page.tsx` and `knowledge/[slug]/page.tsx` to use shared fallback data
+- Typecheck passes, lint passes, static export build succeeds with 26 pages including all 10 article detail pages
+- Verified generated HTML contains all article titles and content correctly
+- Files changed: `website/src/lib/article-content.ts`, `website/src/app/knowledge/page.tsx`, `website/src/app/knowledge/[slug]/page.tsx`, `studio/sample-data/articles-10.ndjson`, `website/CLAUDE.md`
+- **Learnings for future iterations:**
+  - Large fallback datasets should be extracted to shared library files (e.g., `src/lib/article-content.ts`) instead of being duplicated inline in page components
+  - When writing Chinese content with quotes inside TypeScript strings, use 「」or '' instead of " to avoid premature string termination
+  - Sanity NDJSON can be generated programmatically from the same fallback source to ensure content consistency between website and CMS
+  - The `generateStaticParams` function handles all 10 article slugs automatically from the shared fallback data
+---

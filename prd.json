@@ -143,8 +143,8 @@
         "No absolute terms or efficacy claims in article content"
       ],
       "priority": 8,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "10 comprehensive educational articles created as fallback data and NDJSON import file. Articles cover all 5 categories with 3-5 Q\u0026A sections each, references to WHO/中华口腔医学会/全国口腔健康流行病学调查. Display verified in static export build with 26 pages. To publish to Sanity, create a project and import studio/sample-data/articles-10.ndjson."
     },
     {
       "id": "US-009",

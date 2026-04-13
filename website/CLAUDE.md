@@ -107,3 +107,10 @@ Fetch full referenced documents in a single query using the `->` operator:
   }
 }
 ```
+
+### Extracting Fallback Content to Shared Files
+When fallback data becomes large (e.g., 10+ knowledge base articles), extract it from page files into a shared library file like `src/lib/article-content.ts`:
+- Keeps page files under 800 lines
+- Allows reuse across list page (`/knowledge/page.tsx`) and detail page (`/knowledge/[slug]/page.tsx`)
+- Use helper functions to generate Portable Text blocks to reduce repetition
+- Export both the full article record (for detail pages) and a stripped list variant (for list pages)

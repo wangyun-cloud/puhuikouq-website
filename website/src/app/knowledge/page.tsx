@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { sanityFetch, isSanityConfigured } from "@/lib/sanity";
+import { fallbackArticleList } from "@/lib/article-content";
 import { KnowledgeList } from "./knowledge-list";
 
 interface ArticleDoc {
@@ -23,53 +24,7 @@ const articlesQuery = `*[_type == "article"] | order(publishedAt desc) {
   publishedAt
 }`;
 
-const fallbackArticles: ArticleDoc[] = [
-  {
-    _id: "article-1",
-    title: "种植牙术后注意事项",
-    slug: { current: "implant-aftercare" },
-    category: "implant",
-    excerpt: "了解种植牙手术后的护理要点，帮助创口顺利恢复，延长种植牙使用年限。",
-    readTime: 5,
-    publishedAt: "2024-04-01T08:00:00.000Z",
-  },
-  {
-    _id: "article-2",
-    title: "隐形矫正适合哪些人群",
-    slug: { current: "invisible-orthodontics-candidates" },
-    category: "orthodontics",
-    excerpt: "隐形矫正作为一种牙齿矫正方式，适合部分对美观要求较高的青少年和成年人。",
-    readTime: 6,
-    publishedAt: "2024-03-20T08:00:00.000Z",
-  },
-  {
-    _id: "article-3",
-    title: "儿童口腔护理的常见问题",
-    slug: { current: "pediatric-oral-care-faq" },
-    category: "pediatric",
-    excerpt: "从乳牙萌出到恒牙替换，家长应关注孩子的口腔卫生习惯培养和定期检查。",
-    readTime: 4,
-    publishedAt: "2024-03-15T08:00:00.000Z",
-  },
-  {
-    _id: "article-4",
-    title: "牙周病的早期信号",
-    slug: { current: "periodontal-early-signs" },
-    category: "periodontal",
-    excerpt: "牙龈出血、口臭、牙龈退缩等可能是牙周组织出现问题的信号，建议尽早检查。",
-    readTime: 5,
-    publishedAt: "2024-03-10T08:00:00.000Z",
-  },
-  {
-    _id: "article-5",
-    title: "日常口腔护理的正确方法",
-    slug: { current: "daily-oral-care-tips" },
-    category: "oral-care",
-    excerpt: "掌握正确的刷牙方法、牙线使用技巧和漱口习惯，有助于维护口腔健康。",
-    readTime: 4,
-    publishedAt: "2024-03-05T08:00:00.000Z",
-  },
-];
+const fallbackArticles: ArticleDoc[] = fallbackArticleList;
 
 export const metadata: Metadata = {
   title: "口腔健康知识库",
