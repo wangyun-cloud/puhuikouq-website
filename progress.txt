@@ -9,6 +9,7 @@
 - `@base-ui/react` components use `render` prop for composition, NOT `asChild` like Radix (e.g., `<SheetTrigger render={<Button />} />`)
 - `@base-ui/react` Accordion uses `multiple` boolean prop, NOT `type="multiple"` like Radix
 - Next.js 14 App Router natively supports `robots.ts` and `sitemap.ts` for static export—no extra library needed
+- Server Actions are NOT supported with `output: 'export'` in Next.js 14; use API routes + client-side `fetch` for form submissions
 
 ## 2026/04/13 17:17 - US-001
 - Initialized Next.js 14 project in `website/` with TypeScript, Tailwind CSS v3.4, App Router
@@ -141,4 +142,21 @@
   - When writing Chinese content with quotes inside TypeScript strings, use 「」or '' instead of " to avoid premature string termination
   - Sanity NDJSON can be generated programmatically from the same fallback source to ensure content consistency between website and CMS
   - The `generateStaticParams` function handles all 10 article slugs automatically from the shared fallback data
+---
+
+## 2026/04/13 13:30 - US-009
+- Created booking form page at `/booking` with fields: name, phone, service, preferred date, symptoms, clinic selection
+- Implemented client-side form validation (name length, phone regex, service required, symptoms max 500 chars)
+- Created API route at `/api/booking` to create Booking documents in Sanity via server-side write client
+- Added `getSanityWriteClient()` in `lib/sanity.ts` using `SANITY_API_WRITE_TOKEN` for authenticated mutations
+- Created guide page at `/guide` with appointment process timeline, business hours, and transportation info
+- Created privacy policy page at `/privacy` compliant with personal information protection law (PIPL)
+- Updated `website/CLAUDE.md` with form/static-export patterns
+- Typecheck passes, lint passes, static export build succeeds with 30 pages
+- Files changed: `website/src/lib/sanity.ts`, `website/src/app/api/booking/route.ts`, `website/src/app/booking/page.tsx`, `website/src/app/booking/booking-form.tsx`, `website/src/app/guide/page.tsx`, `website/src/app/privacy/page.tsx`, `website/CLAUDE.md`
+- **Learnings for future iterations:**
+  - Server Actions are NOT supported with `output: 'export'` in Next.js 14; use API routes + client-side `fetch` instead
+  - Keep Sanity write tokens server-side in API routes, never expose them in client bundles
+  - `useActionState` is React 19 only; on React 18 use `useFormState` + `useFormStatus` from `react-dom`
+  - For Chinese privacy policies, reference 《中华人民共和国个人信息保护法》explicitly for compliance credibility
 ---

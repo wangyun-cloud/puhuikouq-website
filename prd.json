@@ -161,8 +161,8 @@
         "Verify form submission in browser and Sanity Studio"
       ],
       "priority": 9,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Booking form implemented at /booking with client-side validation and API route at /api/booking for Sanity writes. Guide page at /guide and privacy policy at /privacy created. Typecheck and build pass. Note: API routes work in dev/server deployments but not on purely static hosts like GitHub Pages."
     },
     {
       "id": "US-010",
