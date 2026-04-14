@@ -42,22 +42,8 @@ const articleQuery = `*[_type == "article" && slug.current == $slug][0] {
   }
 }`;
 
-const allSlugsQuery = `*[_type == "article"] { slug { current } }`;
-
 export async function generateStaticParams() {
-  if (!isSanityConfigured()) {
-    return Object.keys(fallbackArticles).map((slug) => ({ slug }));
-  }
-
-  try {
-    const slugs = await sanityFetch<{ slug: { current: string } }[]>({
-      query: allSlugsQuery,
-      tags: ["article"],
-    });
-    return slugs.map((s) => ({ slug: s.slug.current }));
-  } catch {
-    return Object.keys(fallbackArticles).map((slug) => ({ slug }));
-  }
+  return Object.keys(fallbackArticles).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
