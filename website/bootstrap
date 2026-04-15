@@ -1,2 +1,3 @@
 #!/bin/bash
-./.node/bin/node node_modules/.bin/next start -p 3000
+export PATH="./.node/bin:$PATH"
+./.node/bin/node node_modules/next/dist/bin/next start -p 3000
