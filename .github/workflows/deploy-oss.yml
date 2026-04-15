@@ -47,9 +47,22 @@ jobs:
           bucket_name = os.environ['OSS_BUCKET']
 
           auth = oss2.Auth(access_key_id, access_key_secret)
+          service = oss2.Service(auth, endpoint)
+
+          # 如果 bucket 不存在则创建
+          try:
+              service.get_bucket_info(bucket_name)
+          except oss2.exceptions.NoSuchBucket:
+              print(f"Creating bucket {bucket_name}...")
+              bucket = oss2.Bucket(auth, endpoint, bucket_name)
+              bucket.create_bucket(permission=oss2.BUCKET_ACL_PUBLIC_READ)
+          except Exception as e:
+              print(f"Error checking bucket: {e}")
+              sys.exit(1)
+
           bucket = oss2.Bucket(auth, endpoint, bucket_name)
 
-          # 设置 bucket 为公共读（如果已经是则忽略错误）
+          # 设置 bucket 为公共读
           try:
               bucket.put_bucket_acl(oss2.BUCKET_ACL_PUBLIC_READ)
           except Exception:
@@ -76,6 +89,7 @@ jobs:
                   bucket.put_object_from_file(key, str(f))
 
           print("Upload complete")
+          print(f"Website URL: http://{bucket_name}.{endpoint}")
           PYEOF
         env:
           OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
