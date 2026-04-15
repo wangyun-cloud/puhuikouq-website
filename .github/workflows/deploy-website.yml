@@ -41,12 +41,11 @@ jobs:
       - name: Configure Aliyun credentials
         run: |
           mkdir -p ~/.s
-          cat > ~/.s/config.yaml << 'EOF'
-          access:
-            default:
-              AccountID: ${{ secrets.ALIYUN_ACCOUNT_ID }}
-              AccessKeyID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
-              AccessKeySecret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+          cat > ~/.s/access.yaml << 'EOF'
+          default:
+            AccountID: ${{ secrets.ALIYUN_ACCOUNT_ID }}
+            AccessKeyID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+            AccessKeySecret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
           EOF
 
       - name: Deploy to Aliyun FC
