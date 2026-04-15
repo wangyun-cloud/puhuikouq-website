@@ -35,6 +35,13 @@ jobs:
           NEXT_PUBLIC_SANITY_DATASET: production
           SANITY_API_TOKEN: ${{ secrets.SANITY_API_TOKEN }}
 
+      - name: Bundle Node.js for custom runtime
+        run: |
+          curl -fsSL https://nodejs.org/dist/v20.12.2/node-v20.12.2-linux-x64.tar.xz -o node.tar.xz
+          tar -xf node.tar.xz
+          mv node-v20.12.2-linux-x64 .node
+          rm node.tar.xz
+
       - name: Install Serverless Devs v2
         run: npm install @serverless-devs/s@2 -g
 
