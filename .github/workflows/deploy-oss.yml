@@ -34,13 +34,51 @@ jobs:
           NEXT_PUBLIC_SANITY_PROJECT_ID: wplpjccf
           NEXT_PUBLIC_SANITY_DATASET: production
 
-      - name: Install ossutil
-        run: |
-          curl -L https://gosspublic.alicdn.com/ossutil/1.7.19/ossutil64 -o ossutil
-          chmod +x ossutil
-          ./ossutil config -e ${{ secrets.OSS_ENDPOINT }} -i ${{ secrets.OSS_ACCESS_KEY_ID }} -k ${{ secrets.OSS_ACCESS_KEY_SECRET }}
-
       - name: Upload to OSS
         run: |
-          ./ossutil rm -rf oss://${{ secrets.OSS_BUCKET }}/ || true
-          ./ossutil cp -rf dist/ oss://${{ secrets.OSS_BUCKET }}/
+          pip install oss2 -q
+          python3 << 'PYEOF'
+          import oss2, os, sys
+          from pathlib import Path
+
+          access_key_id = os.environ['OSS_ACCESS_KEY_ID']
+          access_key_secret = os.environ['OSS_ACCESS_KEY_SECRET']
+          endpoint = os.environ['OSS_ENDPOINT']
+          bucket_name = os.environ['OSS_BUCKET']
+
+          auth = oss2.Auth(access_key_id, access_key_secret)
+          bucket = oss2.Bucket(auth, endpoint, bucket_name)
+
+          # 设置 bucket 为公共读（如果已经是则忽略错误）
+          try:
+              bucket.put_bucket_acl(oss2.BUCKET_ACL_PUBLIC_READ)
+          except Exception:
+              pass
+
+          # 开启静态网站托管
+          try:
+              bucket.put_bucket_website(oss2.models.BucketWebsite('index.html', '404.html'))
+          except Exception:
+              pass
+
+          # 清空旧文件并上传新文件
+          dist_dir = Path('dist')
+          if not dist_dir.exists():
+              print("dist directory not found")
+              sys.exit(1)
+
+          for obj in oss2.ObjectIterator(bucket):
+              bucket.delete_object(obj.key)
+
+          for f in dist_dir.rglob('*'):
+              if f.is_file():
+                  key = str(f.relative_to(dist_dir))
+                  bucket.put_object_from_file(key, str(f))
+
+          print("Upload complete")
+          PYEOF
+        env:
+          OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
+          OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
+          OSS_BUCKET: ${{ secrets.OSS_BUCKET }}
+          OSS_ENDPOINT: ${{ secrets.OSS_ENDPOINT }}
