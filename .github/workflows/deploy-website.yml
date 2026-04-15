@@ -49,6 +49,6 @@ jobs:
           EOF
 
       - name: Deploy to Aliyun FC
-        run: s deploy -y
+        run: s deploy --use-local -y
         env:
           SANITY_API_TOKEN: ${{ secrets.SANITY_API_TOKEN }}

@@ -33,6 +33,11 @@ services:
           NEXT_PUBLIC_SANITY_DATASET: production
           # SANITY_API_TOKEN 建议通过阿里云控制台配置，不要直接写在此文件中
           SANITY_API_TOKEN: ${env(SANITY_API_TOKEN)}
+        customRuntimeConfig:
+          command:
+            - sh
+            - bootstrap
+          port: 3000
       triggers:
         - name: httpTrigger
           type: http
