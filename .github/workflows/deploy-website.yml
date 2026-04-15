@@ -1,0 +1,52 @@
+name: Deploy Website to Aliyun FC
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'website/**'
+      - '.github/workflows/deploy-website.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: website
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: website/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Next.js
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SANITY_PROJECT_ID: wplpjccf
+          NEXT_PUBLIC_SANITY_DATASET: production
+          SANITY_API_TOKEN: ${{ secrets.SANITY_API_TOKEN }}
+
+      - name: Install Serverless Devs
+        run: npm install @serverless-devs/s -g
+
+      - name: Configure Aliyun credentials
+        run: |
+          s config add \
+            --AccessKeyID "${{ secrets.ALIYUN_ACCESS_KEY_ID }}" \
+            --AccessKeySecret "${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}" \
+            --AccountID "${{ secrets.ALIYUN_ACCOUNT_ID }}" \
+            --alias default
+
+      - name: Deploy to Aliyun FC
+        run: s deploy -y
+        env:
+          SANITY_API_TOKEN: ${{ secrets.SANITY_API_TOKEN }}
