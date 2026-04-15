@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import { Calendar, Phone, User, ClipboardList, MapPin, CheckCircle } from "lucide-react";
+import { Calendar, Phone, User, ClipboardList, MapPin, CheckCircle, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface ClinicOption {
@@ -71,11 +71,15 @@ function validateForm(data: {
   return errors;
 }
 
+// 修改这里换成诊所的真实邮箱，即可通过邮件接收预约信息
+const CLINIC_EMAIL = "contact@puhuikouq.com";
+
 export function BookingForm({ clinics }: BookingFormProps) {
   const [success, setSuccess] = useState(false);
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState<FormErrors>({});
   const [isPending, setIsPending] = useState(false);
+  const [bookingInfo, setBookingInfo] = useState("");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -100,38 +104,65 @@ export function BookingForm({ clinics }: BookingFormProps) {
     }
 
     setIsPending(true);
-    try {
-      const res = await fetch("/api/booking", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
 
-      const result = await res.json();
-      if (res.ok && result.success) {
-        setSuccess(true);
-        setMessage(result.message);
-      } else {
-        setMessage(result.message || "预约提交失败，请稍后重试");
-        if (result.errors) {
-          setErrors(result.errors);
-        }
-      }
-    } catch {
-      setMessage("网络异常，请稍后重试或拨打电话预约");
-    } finally {
-      setIsPending(false);
-    }
+    const serviceLabel = serviceOptions.find((s) => s.value === payload.service)?.label || payload.service;
+    const clinicLabel = clinics.find((c) => c._id === payload.clinic)?.name || "未选择";
+
+    const infoText = [
+      `姓名：${payload.name}`,
+      `电话：${payload.phone}`,
+      `预约项目：${serviceLabel}`,
+      `期望日期：${payload.preferredDate || "尽快安排"}`,
+      `选择门诊：${clinicLabel}`,
+      `症状描述：${payload.symptoms || "无"}`,
+    ].join("\n");
+
+    setBookingInfo(infoText);
+
+    // 打开邮件客户端发送预约信息
+    const subject = encodeURIComponent(`【网站预约】${payload.name} - ${serviceLabel}`);
+    const body = encodeURIComponent(infoText);
+    window.location.href = `mailto:${CLINIC_EMAIL}?subject=${subject}&body=${body}`;
+
+    setSuccess(true);
+    setMessage("预约信息已生成，邮件客户端已打开。如未自动跳转，请复制下方信息通过电话或微信联系诊所。");
+    setIsPending(false);
   }
 
   if (success) {
     return (
-      <div className="rounded-xl bg-green-50 p-8 text-center">
-        <CheckCircle className="mx-auto mb-4 h-12 w-12 text-green-600" />
-        <h2 className="mb-2 text-xl font-semibold text-green-800">预约成功</h2>
-        <p className="text-green-700">{message}</p>
-        <div className="mt-6">
-          <Button asChild variant="outline">
+      <div className="space-y-6">
+        <div className="rounded-xl bg-green-50 p-8 text-center">
+          <CheckCircle className="mx-auto mb-4 h-12 w-12 text-green-600" />
+          <h2 className="mb-2 text-xl font-semibold text-green-800">预约信息已生成</h2>
+          <p className="text-green-700">{message}</p>
+        </div>
+
+        <div className="rounded-xl border bg-card p-6 shadow-sm">
+          <h3 className="mb-3 text-base font-semibold">预约内容</h3>
+          <pre className="mb-4 whitespace-pre-wrap rounded-lg bg-muted p-4 text-sm text-muted-foreground">
+            {bookingInfo}
+          </pre>
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={() => {
+              navigator.clipboard.writeText(bookingInfo);
+            }}
+          >
+            <Copy className="mr-2 h-4 w-4" />
+            复制预约信息
+          </Button>
+        </div>
+
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <Button asChild variant="outline" className="flex-1">
+            <a href="tel:021-58660039">
+              <Phone className="mr-2 h-4 w-4" />
+              拨打电话 021-5866 0039
+            </a>
+          </Button>
+          <Button asChild className="flex-1">
             <a href="/">返回首页</a>
           </Button>
         </div>
