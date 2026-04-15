@@ -47,20 +47,17 @@ jobs:
           bucket_name = os.environ['OSS_BUCKET']
 
           auth = oss2.Auth(access_key_id, access_key_secret)
-          service = oss2.Service(auth, endpoint)
 
           # 如果 bucket 不存在则创建
           try:
-              service.get_bucket_info(bucket_name)
+              bucket = oss2.Bucket(auth, endpoint, bucket_name)
+              bucket.get_bucket_info()
           except oss2.exceptions.NoSuchBucket:
               print(f"Creating bucket {bucket_name}...")
-              bucket = oss2.Bucket(auth, endpoint, bucket_name)
               bucket.create_bucket(permission=oss2.BUCKET_ACL_PUBLIC_READ)
           except Exception as e:
               print(f"Error checking bucket: {e}")
               sys.exit(1)
-
-          bucket = oss2.Bucket(auth, endpoint, bucket_name)
 
           # 设置 bucket 为公共读
           try:
