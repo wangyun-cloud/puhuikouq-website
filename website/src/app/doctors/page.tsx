@@ -2,27 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Phone, Calendar, Award, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { sanityFetch, isSanityConfigured, urlFor } from "@/lib/sanity";
-
-interface DoctorDoc {
-  _id: string;
-  name: string;
-  photo?: {
-    asset?: { _ref?: string; _type?: string };
-    alt?: string;
-  };
-  education: string[];
-  qualifications: string[];
-  specialties: string[];
-  yearsOfPractice: number;
-  bio?: string;
-}
+import { fallbackDoctors, realDoctorImages, type DoctorDoc } from "@/lib/doctors-data";
 
 const doctorsQuery = `*[_type == "doctor"] | order(order asc) {
   _id,
@@ -35,54 +17,15 @@ const doctorsQuery = `*[_type == "doctor"] | order(order asc) {
   bio
 }`;
 
-const fallbackDoctors: DoctorDoc[] = [
-  {
-    _id: "doctor-1",
-    name: "张明远",
-    education: ["上海交通大学医学院口腔医学硕士"],
-    qualifications: ["口腔执业医师", "种植修复专科培训证书"],
-    specialties: ["种植牙", "口腔修复"],
-    yearsOfPractice: 15,
-    bio: "长期从事口腔种植与修复临床工作，注重治疗方案的规范化与个性化。",
-  },
-  {
-    _id: "doctor-2",
-    name: "李静怡",
-    education: ["四川大学华西口腔医学院正畸学硕士"],
-    qualifications: ["口腔执业医师", "口腔正畸专科医师"],
-    specialties: ["牙齿矫正", "儿童口腔"],
-    yearsOfPractice: 12,
-    bio: "专注于青少年及成人牙齿矫正，重视矫正过程中的口腔健康管理。",
-  },
-  {
-    _id: "doctor-3",
-    name: "王建华",
-    education: ["同济大学口腔医学院牙周病学硕士"],
-    qualifications: ["口腔执业医师", "牙周病专科培训证书"],
-    specialties: ["牙周治疗", "根管治疗"],
-    yearsOfPractice: 10,
-    bio: "擅长牙周疾病的综合诊治与长期维护，倡导预防为主的口腔健康理念。",
-  },
-  {
-    _id: "doctor-4",
-    name: "陈思源",
-    education: ["复旦大学上海医学院口腔医学学士"],
-    qualifications: ["口腔执业医师", "口腔外科培训证书"],
-    specialties: ["口腔外科", "种植牙"],
-    yearsOfPractice: 8,
-    bio: "主要从事口腔外科及种植修复工作，注重手术安全和患者体验。",
-  },
-];
-
 function getDoctorImageUrl(doc: DoctorDoc): string {
-  if (!isSanityConfigured() || !doc.photo?.asset?._ref) {
-    return "";
+  if (isSanityConfigured() && doc.photo?.asset?._ref) {
+    try {
+      return urlFor(doc.photo).url();
+    } catch {
+      // fall through to local
+    }
   }
-  try {
-    return urlFor(doc.photo).url();
-  } catch {
-    return "";
-  }
+  return realDoctorImages[doc.name] || "";
 }
 
 export const metadata: Metadata = {
@@ -114,13 +57,13 @@ export default async function DoctorsPage() {
     doctors.length > 0
       ? doctors.map((d) => ({
           ...d,
-          photoUrl: getDoctorImageUrl(d),
+          photoUrl: getDoctorImageUrl(d) || realDoctorImages[d.name] || "",
           photoAlt: d.photo?.alt || `${d.name}医生照片`,
         }))
       : fallbackDoctors.map((d) => ({
           ...d,
-          photoUrl: "",
-          photoAlt: `${d.name}医生照片`,
+          photoUrl: realDoctorImages[d.name] || "",
+          photoAlt: d.photo?.alt || `${d.name}医生照片`,
         }));
 
   const physicianSchemas = displayDoctors.map((doctor) => ({
@@ -153,13 +96,16 @@ export default async function DoctorsPage() {
       />
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-medical-blue via-medical-blue to-medical-blue-dark py-16 text-white md:py-24">
+      <section className="bg-[#f9f7f2] py-16 md:py-24">
         <div className="container">
           <div className="mx-auto max-w-3xl text-center">
-            <h1 className="mb-4 text-3xl font-bold md:text-4xl lg:text-5xl">
+            <p className="mb-3 text-sm font-medium tracking-wide text-[#e86a33]">
+              上海普惠口腔
+            </p>
+            <h1 className="mb-4 text-3xl font-semibold tracking-tight text-[#1c1917] md:text-4xl lg:text-5xl">
               医生团队
             </h1>
-            <p className="text-lg text-white/90 md:text-xl">
+            <p className="text-lg text-[#57534e] md:text-xl">
               经验丰富的口腔医疗团队，致力于为患者提供规范、专业的诊疗服务
             </p>
           </div>
@@ -167,105 +113,148 @@ export default async function DoctorsPage() {
       </section>
 
       {/* Doctors Grid */}
-      <section className="py-16 md:py-24">
+      <section className="bg-[#faf8f5] py-16 md:py-24">
         <div className="container">
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {displayDoctors.map((doctor) => (
-              <Card key={doctor._id} className="overflow-hidden">
-                <div className="relative aspect-[3/4] w-full overflow-hidden bg-muted">
-                  {doctor.photoUrl ? (
-                    <Image
-                      src={doctor.photoUrl}
-                      alt={doctor.photoAlt}
-                      fill
-                      className="object-cover transition-transform duration-500 hover:scale-105"
-                      loading="lazy"
-                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-medical-blue to-medical-blue-light">
-                      <span className="text-4xl font-bold text-white">
-                        {doctor.name.slice(0, 1)}
-                      </span>
-                    </div>
-                  )}
+              <article
+                key={doctor._id}
+                className="group relative flex flex-col rounded-2xl bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg md:p-8"
+              >
+                {/* Avatar */}
+                <div className="relative mx-auto mb-5">
+                  <div className="relative h-36 w-36 overflow-hidden rounded-full border-4 border-[#f2efe8] shadow-md transition-transform duration-500 group-hover:scale-105">
+                    {doctor.photoUrl ? (
+                      <Image
+                        src={doctor.photoUrl}
+                        alt={doctor.photoAlt}
+                        fill
+                        className="object-cover object-center"
+                        loading="eager"
+                        sizes="144px"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center bg-[#e8e4db] text-[#78716c]">
+                        <span className="text-3xl font-light">
+                          {doctor.name.slice(0, 1)}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-[#0d7377] px-3 py-1 text-xs font-medium text-white shadow-sm">
+                    {doctor.yearsOfPractice} 年经验
+                  </div>
                 </div>
-                <CardHeader className="pb-2">
-                  <CardTitle>{doctor.name}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-sm text-muted-foreground">
-                    执业 {doctor.yearsOfPractice} 年
+
+                {/* Name & Title */}
+                <div className="mb-4 text-center">
+                  <h2 className="text-xl font-semibold text-[#1c1917]">
+                    {doctor.name}
+                  </h2>
+                  <p className="mt-1 text-sm font-medium text-[#0d7377]">
+                    {doctor.title}
                   </p>
+                </div>
 
-                  <div className="space-y-2">
-                    <div className="flex items-start gap-2">
-                      <GraduationCap className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                      <div className="space-y-1">
-                        {doctor.education.map((edu) => (
-                          <p key={edu} className="text-xs text-foreground">
-                            {edu}
-                          </p>
-                        ))}
-                      </div>
-                    </div>
+                {/* Specialties */}
+                <div className="mb-5 flex flex-wrap justify-center gap-2">
+                  {doctor.specialties.map((s) => (
+                    <Badge
+                      key={s}
+                      variant="outline"
+                      className="rounded-full border-[#0d7377]/20 bg-[#0d7377]/5 px-2.5 py-0.5 text-xs font-medium text-[#0d7377] hover:bg-[#0d7377]/10"
+                    >
+                      {s}
+                    </Badge>
+                  ))}
+                </div>
 
-                    <div className="flex items-start gap-2">
-                      <Award className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                      <div className="flex flex-wrap gap-1">
-                        {doctor.qualifications.map((q) => (
-                          <span
-                            key={q}
-                            className="inline-block rounded bg-secondary px-2 py-0.5 text-xs text-secondary-foreground"
-                          >
-                            {q}
-                          </span>
-                        ))}
-                      </div>
+                {/* Details */}
+                <div className="mb-4 space-y-2 text-sm">
+                  <div className="flex items-start gap-2">
+                    <GraduationCap className="mt-0.5 h-4 w-4 shrink-0 text-[#0d7377]" />
+                    <div className="flex flex-wrap gap-x-2 gap-y-1 text-[#57534e]">
+                      {doctor.education.map((edu) => (
+                        <span key={edu}>{edu}</span>
+                      ))}
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap gap-1">
-                    {doctor.specialties.map((s) => (
-                      <span
-                        key={s}
-                        className="inline-block rounded border border-primary/20 bg-primary/5 px-2 py-0.5 text-xs text-primary"
-                      >
-                        {s}
-                      </span>
-                    ))}
+                  <div className="flex items-start gap-2">
+                    <Award className="mt-0.5 h-4 w-4 shrink-0 text-[#0d7377]" />
+                    <div className="flex flex-wrap gap-1">
+                      {doctor.qualifications.slice(0, 2).map((q) => (
+                        <span
+                          key={q}
+                          className="inline-block rounded-full bg-[#f2efe8] px-2 py-0.5 text-xs text-[#57534e]"
+                        >
+                          {q}
+                        </span>
+                      ))}
+                      {doctor.qualifications.length > 2 && (
+                        <span className="inline-block rounded-full bg-[#f2efe8] px-2 py-0.5 text-xs text-[#57534e]">
+                          +{doctor.qualifications.length - 2}
+                        </span>
+                      )}
+                    </div>
                   </div>
+                </div>
 
-                  {doctor.bio && (
-                    <p className="text-xs leading-relaxed text-muted-foreground">
-                      {doctor.bio}
-                    </p>
-                  )}
-                </CardContent>
-              </Card>
+                <p className="mb-5 line-clamp-3 text-sm leading-relaxed text-[#78716c]">
+                  {doctor.bio}
+                </p>
+
+                <div className="mt-auto text-center">
+                  <Button
+                    asChild
+                    size="sm"
+                    variant="outline"
+                    className="rounded-full border-[#0d7377] px-6 text-xs text-[#0d7377] hover:bg-[#0d7377] hover:text-white"
+                  >
+                    <a href="/booking">预约咨询</a>
+                  </Button>
+                </div>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="border-t bg-muted/30 py-16 md:py-20">
-        <div className="container">
+      <section className="relative overflow-hidden py-20 text-white md:py-28">
+        <Image
+          src="/images/clinic/诊室.jpg"
+          alt="诊所环境"
+          fill
+          className="object-cover"
+          loading="lazy"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-stone-900/75" />
+        <div className="relative container">
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="mb-4 text-2xl font-bold text-primary md:text-3xl">
+            <p className="mb-3 text-sm font-medium tracking-wide text-[#e86a33]">
+              预约咨询
+            </p>
+            <h2 className="mb-4 text-2xl font-semibold tracking-tight md:text-3xl">
               预约咨询
             </h2>
-            <p className="mb-8 text-muted-foreground">
+            <p className="mb-8 text-white/90">
               如果您希望了解更多诊疗信息或预约就诊，欢迎通过电话或在线方式联系我们
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
-              <Button asChild size="lg">
-                <a href="tel:021-12345678">
+              <Button asChild size="lg" variant="secondary" className="px-8">
+                <a href="tel:021-58660039">
                   <Phone className="mr-2 h-4 w-4" />
-                  021-12345678
+                  021-5866 0039
                 </a>
               </Button>
-              <Button asChild size="lg" variant="outline">
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="border-white/40 bg-transparent px-8 text-white hover:bg-white/10"
+              >
                 <a href="/booking">
                   <Calendar className="mr-2 h-4 w-4" />
                   在线预约

@@ -11,31 +11,32 @@
     --card-foreground: 0 0% 10%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 10%;
-    --primary: 206 70% 39%;
+    --primary: 182 80% 26%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 36 33% 94%;
-    --secondary-foreground: 0 0% 10%;
-    --muted: 36 33% 94%;
-    --muted-foreground: 220 9% 46%;
-    --accent: 200 80% 95%;
-    --accent-foreground: 206 70% 39%;
+    --secondary: 40 18% 92%;
+    --secondary-foreground: 20 14% 10%;
+    --muted: 40 12% 94%;
+    --muted-foreground: 25 6% 45%;
+    --accent: 17 80% 55%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 36 20% 88%;
-    --input: 36 20% 88%;
-    --ring: 206 70% 39%;
-    --radius: 0.625rem;
+    --border: 35 10% 84%;
+    --input: 35 10% 84%;
+    --ring: 182 80% 26%;
+    --radius: 0.5rem;
 
-    /* Custom Design Tokens */
-    --color-medical-blue: #1e6ba8;
-    --color-medical-blue-light: #4a9fd4;
-    --color-medical-blue-dark: #164e7a;
-    --color-warm-beige: #f5f0e8;
-    --color-warm-beige-dark: #e5e0d8;
-    --color-warm-cream: #faf8f5;
-    --color-text-primary: #1a1a1a;
-    --color-text-secondary: #4a4a4a;
-    --color-text-muted: #6b7280;
+    /* Custom Design Tokens - Warm Medical Modern */
+    --color-medical-blue: #0d7377;
+    --color-medical-blue-light: #14919b;
+    --color-medical-blue-dark: #0a5c5f;
+    --color-warm-beige: #f2efe8;
+    --color-warm-beige-dark: #e8e4db;
+    --color-warm-cream: #f9f7f2;
+    --color-text-primary: #1c1917;
+    --color-text-secondary: #57534e;
+    --color-text-muted: #78716c;
+    --color-accent-orange: #e86a33;
 
     /* Typography Scale */
     --text-xs: 0.75rem;

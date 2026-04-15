@@ -1,0 +1,18 @@
+# 敏感配置
+.env.local
+
+# 构建缓存
+.next/cache
+node_modules/.cache
+
+# 测试截图
+/e2e-screenshots
+/e2e-screenshots-v2
+/scroll-screenshots
+/scroll-screenshots-v2
+*.log
+
+# 开发工具
+.DS_Store
+.vscode
+.idea

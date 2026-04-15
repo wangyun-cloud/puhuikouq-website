@@ -1,0 +1,59 @@
+# ------------------------------------
+# 阿里云函数计算 Next.js 部署配置
+# 使用方式：在 website 目录下执行 `s deploy`
+# ------------------------------------
+edition: 1.0.0
+name: puhuikouq-website
+access: default  # 对应 `s config add` 时配置的别名，默认为 default
+
+vars:
+  region: cn-shanghai  # 可改为 cn-hangzhou / cn-beijing 等离你近的节点
+  service:
+    name: puhuikouq-website
+    description: 上海普惠口腔官方网站
+
+services:
+  puhuikouq-website:
+    component: fc
+    props:
+      region: ${vars.region}
+      service: ${vars.service}
+      function:
+        name: nextjs-app
+        description: Next.js 14 App
+        runtime: custom.debian10
+        codeUri: ./
+        timeout: 30
+        memorySize: 512
+        cpu: 0.5
+        diskSize: 512
+        environmentVariables:
+          # 部署前请替换为真实值，或通过阿里云控制台/CLI单独配置
+          NEXT_PUBLIC_SANITY_PROJECT_ID: wplpjccf
+          NEXT_PUBLIC_SANITY_DATASET: production
+          # SANITY_API_TOKEN 建议通过阿里云控制台配置，不要直接写在此文件中
+          SANITY_API_TOKEN: ${env(SANITY_API_TOKEN)}
+        customRuntimeConfig:
+          command:
+            - npm
+            - start
+          port: 3000
+      triggers:
+        - name: httpTrigger
+          type: http
+          config:
+            authType: anonymous
+            methods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+      customDomains:
+        # 首次部署后，阿里云会分配临时域名；绑定自定义域名时请修改此处
+        - domainName: auto
+          protocol: HTTP
+          routeConfigs:
+            - path: /*
+              serviceName: ${vars.service.name}
+              functionName: nextjs-app

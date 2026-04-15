@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Clock, Calendar, Tag, ChevronLeft } from "lucide-react";
+import { Clock, Calendar, Tag, ChevronLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { PortableText } from "@/components/portable-text";
 import { sanityFetch, isSanityConfigured } from "@/lib/sanity";
 import { fallbackArticles } from "@/lib/article-content";
@@ -150,10 +150,10 @@ export default async function ArticlePage({
       />
 
       {/* Breadcrumb / Back */}
-      <div className="border-b bg-muted/30">
+      <div className="border-b border-border/40">
         <div className="container py-4">
-          <Button asChild variant="ghost" size="sm">
-            <Link href="/knowledge" className="inline-flex items-center gap-1">
+          <Button asChild variant="ghost" size="sm" className="-ml-2 gap-1 text-muted-foreground hover:text-foreground">
+            <Link href="/knowledge">
               <ChevronLeft className="h-4 w-4" />
               返回知识库
             </Link>
@@ -162,11 +162,14 @@ export default async function ArticlePage({
       </div>
 
       {/* Article Header */}
-      <section className="bg-gradient-to-br from-medical-blue via-medical-blue to-medical-blue-dark py-12 text-white md:py-16">
+      <section className="bg-gradient-to-br from-medical-blue-dark via-medical-blue to-medical-blue-light py-12 text-white md:py-16">
         <div className="container">
           <div className="mx-auto max-w-3xl">
+            <p className="mb-3 text-sm font-medium tracking-wider text-white/80 uppercase">
+              Knowledge
+            </p>
             <div className="mb-4 flex flex-wrap items-center gap-3 text-sm text-white/90">
-              <span className="inline-flex items-center gap-1 rounded bg-white/20 px-2 py-0.5">
+              <span className="inline-flex items-center gap-1 rounded-full bg-white/20 px-2.5 py-0.5">
                 <Tag className="h-3.5 w-3.5" />
                 {categoryLabel}
               </span>
@@ -179,7 +182,7 @@ export default async function ArticlePage({
                 {article.readTime} 分钟阅读
               </span>
             </div>
-            <h1 className="text-2xl font-bold md:text-3xl lg:text-4xl">
+            <h1 className="text-2xl font-bold tracking-tight md:text-3xl lg:text-4xl">
               {article.title}
             </h1>
           </div>
@@ -189,11 +192,11 @@ export default async function ArticlePage({
       {/* Quick Answer */}
       <div className="container pt-10">
         <div className="mx-auto max-w-3xl">
-          <div className="rounded-lg border-l-4 border-primary bg-muted/40 p-5">
-            <p className="text-sm font-medium text-muted-foreground">
+          <div className="rounded-2xl border border-border/40 bg-warm-cream p-6">
+            <p className="text-xs font-medium tracking-wider text-primary uppercase">
               快速了解
             </p>
-            <p className="mt-1 text-lg font-medium text-foreground">
+            <p className="mt-2 text-lg font-medium text-foreground">
               {article.quickAnswer}
             </p>
           </div>
@@ -211,36 +214,45 @@ export default async function ArticlePage({
 
       {/* Related Articles */}
       {article.relatedArticles && article.relatedArticles.length > 0 && (
-        <section className="border-t bg-muted/30 py-12 md:py-16">
+        <section className="border-t border-border/40 bg-muted/20 py-12 md:py-16">
           <div className="container">
             <div className="mx-auto max-w-3xl">
-              <h2 className="mb-6 text-xl font-bold text-foreground">
+              <p className="mb-3 text-sm font-medium tracking-wider text-primary uppercase">
+                Related
+              </p>
+              <h2 className="mb-6 text-xl font-bold tracking-tight text-foreground">
                 相关文章推荐
               </h2>
               <div className="grid gap-4 sm:grid-cols-2">
                 {article.relatedArticles.map((related) => (
-                  <Card key={related._id} className="transition-shadow hover:shadow-md">
-                    <CardHeader className="pb-2">
-                      <div className="mb-1 flex items-center gap-2 text-xs text-muted-foreground">
-                        <span className="text-primary">
+                  <Card
+                    key={related._id}
+                    className="group flex flex-col overflow-hidden border-border/50 transition-all hover:border-primary/20 hover:shadow-lg"
+                  >
+                    <CardContent className="flex flex-1 flex-col p-5">
+                      <div className="mb-3 flex items-center gap-2 text-xs text-muted-foreground">
+                        <span className="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 font-medium text-primary">
                           {categoryLabels[related.category as CategoryKey] || related.category}
                         </span>
-                        <span>·</span>
                         <span>{new Date(related.publishedAt).toLocaleDateString("zh-CN")}</span>
                       </div>
-                      <CardTitle className="text-base">
-                        <Link
-                          href={`/knowledge/${related.slug.current}`}
-                          className="transition-colors hover:text-primary"
-                        >
+                      <h3 className="mb-2 text-base font-semibold text-foreground transition-colors group-hover:text-primary">
+                        <Link href={`/knowledge/${related.slug.current}`}>
                           {related.title}
                         </Link>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="pt-0">
-                      <p className="line-clamp-2 text-sm text-muted-foreground">
+                      </h3>
+                      <p className="mb-4 line-clamp-2 flex-1 text-sm text-muted-foreground">
                         {related.excerpt}
                       </p>
+                      <div className="mt-auto">
+                        <Link
+                          href={`/knowledge/${related.slug.current}`}
+                          className="inline-flex items-center gap-1 text-sm font-medium text-primary transition-opacity hover:opacity-80"
+                        >
+                          阅读全文
+                          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                        </Link>
+                      </div>
                     </CardContent>
                   </Card>
                 ))}

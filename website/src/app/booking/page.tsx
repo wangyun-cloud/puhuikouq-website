@@ -14,10 +14,7 @@ const clinicsQuery = `*[_type == "clinic"] | order(order asc) {
 }`;
 
 const fallbackClinics: ClinicDoc[] = [
-  { _id: "clinic-1", name: "陆家嘴分院" },
-  { _id: "clinic-2", name: "静安分院" },
-  { _id: "clinic-3", name: "徐汇分院" },
-  { _id: "clinic-4", name: "虹桥分院" },
+  { _id: "clinic-1", name: "上海皓星口腔门诊部" },
 ];
 
 export const metadata: Metadata = {
@@ -102,11 +99,11 @@ export default async function BookingPage() {
                   如果您在预约过程中遇到问题，欢迎随时致电咨询。
                 </p>
                 <a
-                  href="tel:021-12345678"
+                  href="tel:021-58660039"
                   className="inline-flex items-center gap-2 rounded-lg bg-white/20 px-4 py-2 text-sm font-medium backdrop-blur transition-colors hover:bg-white/30"
                 >
                   <Phone className="h-4 w-4" />
-                  021-12345678
+                  021-5866 0039
                 </a>
               </div>
             </div>

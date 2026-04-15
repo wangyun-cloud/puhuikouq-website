@@ -121,7 +121,7 @@ export default function PrivacyPage() {
                 </li>
               </ul>
               <p className="text-muted-foreground">
-                如需行使上述权利，请联系我们的客服热线：021-12345678。
+                如需行使上述权利，请联系我们的客服热线：021-5866 0039。
               </p>
 
               <h2 className="mt-8 text-lg font-semibold">七、未成年人保护</h2>
@@ -139,9 +139,9 @@ export default function PrivacyPage() {
                 如您对本隐私政策有任何疑问、意见或建议，欢迎通过以下方式与我们联系：
               </p>
               <ul className="list-disc space-y-1 pl-5 text-muted-foreground">
-                <li>客服电话：021-12345678</li>
+                <li>客服电话：021-5866 0039</li>
                 <li>服务时间：周一至周日 08:00 - 20:00</li>
-                <li>总部地址：上海市浦东新区陆家嘴环路1000号</li>
+                <li>门诊地址：上海市浦东新区东方路1381号兰村大厦3楼（4号线蓝村路地铁站2号口旁）</li>
               </ul>
             </div>
           </div>

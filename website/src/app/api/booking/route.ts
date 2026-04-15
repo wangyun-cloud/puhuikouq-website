@@ -11,6 +11,12 @@ const serviceLabels: Record<string, string> = {
   other: "其他",
 };
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
 function validateBookingForm(data: {
   name: string;
   phone: string;
@@ -39,14 +45,21 @@ function validateBookingForm(data: {
   return errors;
 }
 
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
+}
+
 export async function POST(request: NextRequest) {
   if (!isSanityConfigured()) {
     return NextResponse.json(
       {
         success: false,
-        message: "预约系统暂不可用，请拨打电话 021-12345678 进行预约",
+        message: "预约系统暂不可用，请拨打电话 021-5866 0039 进行预约",
       },
-      { status: 503 }
+      { status: 503, headers: corsHeaders }
     );
   }
 
@@ -61,7 +74,7 @@ export async function POST(request: NextRequest) {
           message: "请检查表单填写是否正确",
           errors,
         },
-        { status: 400 }
+        { status: 400, headers: corsHeaders }
       );
     }
 
@@ -101,10 +114,13 @@ export async function POST(request: NextRequest) {
 
     await getSanityWriteClient().create(doc);
 
-    return NextResponse.json({
-      success: true,
-      message: "预约提交成功！我们的工作人员会尽快与您联系确认。",
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        message: "预约提交成功！我们的工作人员会尽快与您联系确认。",
+      },
+      { headers: corsHeaders }
+    );
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
@@ -112,7 +128,7 @@ export async function POST(request: NextRequest) {
         success: false,
         message: `预约提交失败，请稍后重试或拨打电话预约。错误：${message}`,
       },
-      { status: 500 }
+      { status: 500, headers: corsHeaders }
     );
   }
 }

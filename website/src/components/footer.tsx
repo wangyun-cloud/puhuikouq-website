@@ -13,23 +13,23 @@ const footerLinks = [
 
 export function Footer() {
   return (
-    <footer className="w-full border-t border-border bg-muted/40">
+    <footer className="w-full bg-[#1c1917]">
       <div className="container py-12">
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div className="space-y-4">
-            <h3 className="text-lg font-bold text-primary">上海普惠口腔</h3>
-            <p className="text-sm text-muted-foreground">
-              致力于为患者提供优质、温馨的口腔医疗服务
+            <h3 className="text-lg font-bold text-white">上海普惠口腔</h3>
+            <p className="text-sm text-white/70">
+              来自上海的本土企业，致力于为患者提供优质、温馨的口腔医疗服务
             </p>
-            <div className="space-y-2 text-sm text-muted-foreground">
+            <div className="space-y-2 text-sm text-white/70">
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4 shrink-0" />
-                <span>021-12345678</span>
+                <span>021-5866 0039</span>
               </div>
               <div className="flex items-start gap-2">
                 <MapPin className="h-4 w-4 shrink-0" />
-                <span>上海市浦东新区陆家嘴环路1000号</span>
+                <span>上海市浦东新区东方路1381号兰村大厦3楼（4号线蓝村路地铁站2号口旁）</span>
               </div>
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4 shrink-0" />
@@ -40,13 +40,13 @@ export function Footer() {
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h4 className="font-semibold text-foreground">快速链接</h4>
+            <h4 className="font-semibold text-white">快速链接</h4>
             <ul className="grid grid-cols-2 gap-2 text-sm">
               {footerLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-muted-foreground transition-colors hover:text-primary"
+                    className="text-white/70 transition-colors hover:text-white"
                   >
                     {link.label}
                   </Link>
@@ -57,30 +57,30 @@ export function Footer() {
 
           {/* Services */}
           <div className="space-y-4">
-            <h4 className="font-semibold text-foreground">诊疗项目</h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
+            <h4 className="font-semibold text-white">诊疗项目</h4>
+            <ul className="space-y-2 text-sm text-white/70">
               <li>
-                <Link href="/services/implant" className="hover:text-primary">
+                <Link href="/services/implant" className="hover:text-white">
                   种植牙
                 </Link>
               </li>
               <li>
-                <Link href="/services/orthodontics" className="hover:text-primary">
+                <Link href="/services/orthodontics" className="hover:text-white">
                   牙齿矫正
                 </Link>
               </li>
               <li>
-                <Link href="/services/restoration" className="hover:text-primary">
+                <Link href="/services/restoration" className="hover:text-white">
                   牙齿修复
                 </Link>
               </li>
               <li>
-                <Link href="/services/periodontal" className="hover:text-primary">
+                <Link href="/services/periodontal" className="hover:text-white">
                   牙周治疗
                 </Link>
               </li>
               <li>
-                <Link href="/services/pediatric" className="hover:text-primary">
+                <Link href="/services/pediatric" className="hover:text-white">
                   儿童口腔
                 </Link>
               </li>
@@ -89,26 +89,26 @@ export function Footer() {
 
           {/* Legal / ICP */}
           <div className="space-y-4">
-            <h4 className="font-semibold text-foreground">法律信息</h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
+            <h4 className="font-semibold text-white">法律信息</h4>
+            <ul className="space-y-2 text-sm text-white/70">
               <li>
-                <Link href="/privacy" className="hover:text-primary">
+                <Link href="/privacy" className="hover:text-white">
                   隐私政策
                 </Link>
               </li>
               <li>
-                <Link href="/guide" className="hover:text-primary">
+                <Link href="/guide" className="hover:text-white">
                   就诊须知
                 </Link>
               </li>
             </ul>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-white/50">
               ICP备案号：沪ICP备XXXXXXXX号-1
             </p>
           </div>
         </div>
 
-        <div className="mt-10 border-t border-border pt-6 text-center text-sm text-muted-foreground">
+        <div className="mt-10 border-t border-white/10 pt-6 text-center text-sm text-white/60">
           <p>
             © {new Date().getFullYear()} 上海普惠口腔. 保留所有权利.
           </p>

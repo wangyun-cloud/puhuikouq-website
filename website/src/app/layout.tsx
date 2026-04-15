@@ -6,8 +6,8 @@ import { Footer } from "@/components/footer";
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#faf8f5" },
-    { media: "(prefers-color-scheme: dark)", color: "#1a1a1a" },
+    { media: "(prefers-color-scheme: light)", color: "#2aa89b" },
+    { media: "(prefers-color-scheme: dark)", color: "#1f8a80" },
   ],
 };
 

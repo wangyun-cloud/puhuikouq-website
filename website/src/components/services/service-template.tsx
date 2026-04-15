@@ -73,10 +73,13 @@ export function ServicePageTemplate({ service }: ServicePageTemplateProps) {
       />
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-medical-blue via-medical-blue to-medical-blue-dark py-16 text-white md:py-24">
+      <section className="bg-[#0d7377] py-16 text-white md:py-24">
         <div className="container">
           <div className="mx-auto max-w-3xl text-center">
-            <h1 className="mb-4 text-3xl font-bold md:text-4xl lg:text-5xl">
+            <p className="mb-3 text-sm font-medium tracking-wide text-white/80">
+              上海普惠口腔
+            </p>
+            <h1 className="mb-4 text-3xl font-semibold tracking-tight md:text-4xl lg:text-5xl">
               {service.title}
             </h1>
             <p className="mb-6 text-lg text-white/90 md:text-xl">
@@ -93,10 +96,13 @@ export function ServicePageTemplate({ service }: ServicePageTemplateProps) {
       <section className="py-16 md:py-20">
         <div className="container">
           <div className="mx-auto max-w-3xl">
-            <h2 className="mb-6 text-2xl font-bold text-primary md:text-3xl">
+            <p className="mb-3 text-sm font-medium tracking-wide text-[#e86a33]">
+              项目介绍
+            </p>
+            <h2 className="mb-6 text-2xl font-semibold tracking-tight text-[#1c1917] md:text-3xl">
               {service.whatIs.title}
             </h2>
-            <p className="leading-relaxed text-foreground">
+            <p className="leading-relaxed text-[#57534e]">
               {service.whatIs.content}
             </p>
           </div>
@@ -104,22 +110,25 @@ export function ServicePageTemplate({ service }: ServicePageTemplateProps) {
       </section>
 
       {/* Applicable situations */}
-      <section className="border-t bg-warm-cream py-16 md:py-20">
+      <section className="border-t border-[#e7e5e4] bg-[#f9f7f2] py-16 md:py-20">
         <div className="container">
           <div className="mx-auto max-w-3xl">
-            <h2 className="mb-8 text-2xl font-bold text-primary md:text-3xl">
+            <p className="mb-3 text-sm font-medium tracking-wide text-[#e86a33]">
+              适用情况
+            </p>
+            <h2 className="mb-8 text-2xl font-semibold tracking-tight text-[#1c1917] md:text-3xl">
               {service.applicable.title}
             </h2>
             <ul className="grid gap-4 sm:grid-cols-2">
               {service.applicable.situations.map((situation, index) => (
                 <li
                   key={index}
-                  className="flex items-start gap-3 rounded-lg bg-white p-4 shadow-sm"
+                  className="flex items-start gap-4 rounded-lg border border-[#e7e5e4] bg-white p-5 transition-shadow hover:shadow-md"
                 >
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-medium text-primary-foreground">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#0d7377] text-xs font-medium text-white">
                     {index + 1}
                   </span>
-                  <span className="text-foreground">{situation}</span>
+                  <span className="text-[#57534e]">{situation}</span>
                 </li>
               ))}
             </ul>
@@ -128,64 +137,42 @@ export function ServicePageTemplate({ service }: ServicePageTemplateProps) {
       </section>
 
       {/* Treatment process */}
-      <section className="py-16 md:py-20">
+      <section className="bg-[#faf8f5] py-16 md:py-20">
         <div className="container">
-          <div className="mx-auto max-w-4xl">
-            <h2 className="mb-10 text-center text-2xl font-bold text-primary md:text-3xl">
+          <div className="mx-auto max-w-3xl">
+            <p className="mb-3 text-center text-sm font-medium tracking-wide text-[#e86a33]">
+              诊疗流程
+            </p>
+            <h2 className="mb-12 text-center text-2xl font-semibold tracking-tight text-[#1c1917] md:text-3xl">
               {service.process.title}
             </h2>
+
             <div className="relative">
-              <div className="absolute left-4 top-0 bottom-0 w-px bg-border md:left-1/2" />
+              {/* Timeline line */}
+              <div className="absolute left-6 top-2 bottom-2 w-px bg-gradient-to-b from-[#0d7377]/30 via-[#0d7377]/20 to-[#0d7377]/30 md:left-8" />
+
               <div className="space-y-8">
-                {service.process.steps.map((step, index) => {
-                  const isEven = index % 2 === 0;
-                  return (
-                    <div
-                      key={index}
-                      className={`relative flex items-center gap-6 md:gap-0 ${
-                        isEven ? "md:flex-row" : "md:flex-row-reverse"
-                      }`}
-                    >
-                      <div
-                        className={`hidden w-1/2 md:block ${
-                          isEven ? "pr-10 text-right" : "pl-10 text-left"
-                        }`}
-                      >
-                        <h3 className="text-lg font-semibold text-foreground">
-                          {step.title}
-                        </h3>
-                        <p className="mt-1 text-sm text-muted-foreground">
-                          {step.description}
-                        </p>
-                      </div>
-
-                      <div className="absolute left-4 flex h-8 w-8 -translate-x-1/2 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground md:left-1/2">
-                        {step.step}
-                      </div>
-
-                      <div className="ml-10 w-full md:ml-0 md:w-1/2 md:pl-10">
-                        <h3 className="text-lg font-semibold text-foreground md:hidden">
-                          {step.title}
-                        </h3>
-                        <p className="mt-1 text-sm text-muted-foreground md:hidden">
-                          {step.description}
-                        </p>
-                        <div
-                          className={`hidden md:block ${
-                            isEven ? "pl-10 text-left" : "pr-10 text-right"
-                          }`}
-                        >
-                          <h3 className="text-lg font-semibold text-foreground">
-                            {step.title}
-                          </h3>
-                          <p className="mt-1 text-sm text-muted-foreground">
-                            {step.description}
-                          </p>
-                        </div>
-                      </div>
+                {service.process.steps.map((step, index) => (
+                  <div
+                    key={index}
+                    className="relative flex items-start gap-5 md:gap-8"
+                  >
+                    {/* Step number */}
+                    <div className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#0d7377] text-sm font-bold text-white shadow-md ring-4 ring-[#faf8f5] md:h-16 md:w-16 md:text-base md:shadow-lg">
+                      {step.step}
                     </div>
-                  );
-                })}
+
+                    {/* Content card */}
+                    <div className="flex-1 rounded-xl border border-[#e8e4db] bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md md:p-6">
+                      <h3 className="text-lg font-semibold text-[#1c1917] md:text-xl">
+                        {step.title}
+                      </h3>
+                      <p className="mt-2 text-sm leading-relaxed text-[#78716c] md:text-base">
+                        {step.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -193,18 +180,21 @@ export function ServicePageTemplate({ service }: ServicePageTemplateProps) {
       </section>
 
       {/* Precautions */}
-      <section className="border-t bg-muted/30 py-16 md:py-20">
+      <section className="border-t border-[#e7e5e4] bg-[#f9f7f2] py-16 md:py-20">
         <div className="container">
           <div className="mx-auto max-w-3xl">
-            <h2 className="mb-8 text-2xl font-bold text-primary md:text-3xl">
+            <p className="mb-3 text-sm font-medium tracking-wide text-[#e86a33]">
+              注意事项
+            </p>
+            <h2 className="mb-8 text-2xl font-semibold tracking-tight text-[#1c1917] md:text-3xl">
               {service.precautions.title}
             </h2>
-            <div className="rounded-xl bg-white p-6 shadow-sm">
+            <div className="rounded-lg border border-[#e7e5e4] bg-white p-6 shadow-sm">
               <ul className="space-y-3">
                 {service.precautions.items.map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-                    <span className="text-foreground">{item}</span>
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#0d7377]" />
+                    <span className="text-[#57534e]">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -217,14 +207,21 @@ export function ServicePageTemplate({ service }: ServicePageTemplateProps) {
       <section className="py-16 md:py-20">
         <div className="container">
           <div className="mx-auto max-w-3xl">
-            <h2 className="mb-8 text-2xl font-bold text-primary md:text-3xl">
+            <p className="mb-3 text-sm font-medium tracking-wide text-[#e86a33]">
+              常见问题
+            </p>
+            <h2 className="mb-8 text-2xl font-semibold tracking-tight text-[#1c1917] md:text-3xl">
               {service.faq.title}
             </h2>
             <Accordion multiple className="w-full">
               {service.faq.items.map((item, index) => (
                 <AccordionItem key={index} value={`item-${index}`}>
-                  <AccordionTrigger>{item.question}</AccordionTrigger>
-                  <AccordionContent>{item.answer}</AccordionContent>
+                  <AccordionTrigger className="text-left font-medium text-[#1c1917]">
+                    {item.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-[#57534e]">
+                    {item.answer}
+                  </AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>
@@ -233,17 +230,20 @@ export function ServicePageTemplate({ service }: ServicePageTemplateProps) {
       </section>
 
       {/* CTA */}
-      <section className="bg-primary py-16 text-primary-foreground md:py-20">
+      <section className="relative overflow-hidden bg-stone-900 py-20 text-white md:py-28">
         <div className="container">
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="mb-4 text-2xl font-bold md:text-3xl">
+            <p className="mb-3 text-sm font-medium tracking-wide text-[#e86a33]">
+              预约咨询
+            </p>
+            <h2 className="mb-4 text-2xl font-semibold tracking-tight md:text-3xl">
               预约{service.title}咨询
             </h2>
-            <p className="mb-8 text-primary-foreground/90">
+            <p className="mb-8 text-white/90">
               如果您对{service.title}有任何疑问，欢迎预约咨询，我们的工作人员将为您安排合适的就诊时间。
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
-              <Button asChild size="lg" variant="secondary">
+              <Button asChild size="lg" variant="secondary" className="px-8">
                 <Link href="/booking">
                   <Calendar className="mr-2 h-4 w-4" />
                   在线预约
@@ -253,15 +253,15 @@ export function ServicePageTemplate({ service }: ServicePageTemplateProps) {
                 asChild
                 size="lg"
                 variant="outline"
-                className="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground/10"
+                className="border-white/40 bg-transparent px-8 text-white hover:bg-white/10"
               >
-                <a href="tel:021-12345678">
+                <a href="tel:021-58660039">
                   <Phone className="mr-2 h-4 w-4" />
-                  021-12345678
+                  021-5866 0039
                 </a>
               </Button>
             </div>
-            <div className="mt-6 flex items-center justify-center gap-2 text-sm text-primary-foreground/80">
+            <div className="mt-6 flex items-center justify-center gap-2 text-sm text-white/80">
               <Clock className="h-4 w-4" />
               <span>周一至周日 09:00 - 18:00</span>
             </div>

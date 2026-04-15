@@ -3,9 +3,9 @@
 import { useMemo } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Clock, Calendar, Tag } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Clock, Calendar, ArrowRight } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 type CategoryKey = "implant" | "orthodontics" | "oral-care" | "periodontal" | "pediatric";
 
@@ -51,74 +51,90 @@ export function KnowledgeList({ articles }: KnowledgeListProps) {
   return (
     <section className="py-16 md:py-24">
       <div className="container">
-        {/* Category Filter */}
-        <div className="mb-10 flex flex-wrap items-center justify-center gap-3">
-          <Button
-            asChild
-            variant={activeCategory ? "outline" : "default"}
-            size="sm"
-          >
-            <Link href="/knowledge">全部</Link>
-          </Button>
-          {categoryList.map((cat) => (
-            <Button
-              key={cat.key}
-              asChild
-              variant={activeCategory === cat.key ? "default" : "outline"}
-              size="sm"
+        {/* Category Filter - Segmented Control */}
+        <div className="mb-12 flex justify-center">
+          <div className="inline-flex flex-wrap items-center justify-center gap-1 rounded-lg border border-[#e7e5e4] bg-[#f2efe8] p-1">
+            <Link
+              href="/knowledge"
+              className={cn(
+                "rounded-md px-4 py-2 text-sm font-medium transition-all",
+                !activeCategory
+                  ? "bg-white text-[#1c1917] shadow-sm"
+                  : "text-[#78716c] hover:text-[#1c1917]"
+              )}
             >
-              <Link href={`/knowledge?category=${cat.key}`}>{cat.label}</Link>
-            </Button>
-          ))}
+              全部
+            </Link>
+            {categoryList.map((cat) => (
+              <Link
+                key={cat.key}
+                href={`/knowledge?category=${cat.key}`}
+                className={cn(
+                  "rounded-md px-4 py-2 text-sm font-medium transition-all",
+                  activeCategory === cat.key
+                    ? "bg-white text-[#1c1917] shadow-sm"
+                    : "text-[#78716c] hover:text-[#1c1917]"
+                )}
+              >
+                {cat.label}
+              </Link>
+            ))}
+          </div>
         </div>
 
         {/* Articles Grid */}
         {filteredArticles.length > 0 ? (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2">
             {filteredArticles.map((article) => (
               <Card
                 key={article._id}
-                className="flex flex-col overflow-hidden transition-shadow hover:shadow-md"
+                className="group flex flex-col rounded-lg border border-[#e7e5e4] bg-white transition-all hover:border-[#0d7377]/20 hover:shadow-md"
               >
-                <CardHeader className="pb-3">
-                  <div className="mb-2 flex items-center gap-2 text-xs text-muted-foreground">
-                    <span className="inline-flex items-center gap-1 rounded bg-primary/10 px-2 py-0.5 text-primary">
-                      <Tag className="h-3 w-3" />
+                <CardContent className="flex flex-1 flex-col p-6">
+                  <div className="mb-4 flex items-center gap-3 text-xs text-[#78716c]">
+                    <span className="inline-flex items-center rounded-full bg-[#0d7377]/10 px-2.5 py-1 font-medium text-[#0d7377]">
                       {categoryLabels[article.category as CategoryKey] ||
                         article.category}
                     </span>
                     <span className="flex items-center gap-1">
-                      <Calendar className="h-3 w-3" />
+                      <Calendar className="h-3.5 w-3.5" />
                       {new Date(article.publishedAt).toLocaleDateString("zh-CN")}
                     </span>
                     <span className="flex items-center gap-1">
-                      <Clock className="h-3 w-3" />
-                      {article.readTime} 分钟阅读
+                      <Clock className="h-3.5 w-3.5" />
+                      {article.readTime} 分钟
                     </span>
                   </div>
-                  <CardTitle className="text-lg leading-snug">
-                    <Link
-                      href={`/knowledge/${article.slug.current}`}
-                      className="transition-colors hover:text-primary"
-                    >
+                  <h3 className="mb-3 text-lg font-semibold leading-snug text-[#1c1917] transition-colors group-hover:text-[#0d7377]">
+                    <Link href={`/knowledge/${article.slug.current}`}>
                       {article.title}
                     </Link>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="flex-1 pt-0">
-                  <p className="line-clamp-3 text-sm text-muted-foreground">
+                  </h3>
+                  <p className="mb-5 line-clamp-3 flex-1 text-sm text-[#57534e]">
                     {article.excerpt}
                   </p>
+                  <div className="mt-auto">
+                    <Link
+                      href={`/knowledge/${article.slug.current}`}
+                      className="inline-flex items-center gap-1 text-sm font-medium text-[#0d7377] transition-opacity hover:opacity-80"
+                    >
+                      阅读全文
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                    </Link>
+                  </div>
                 </CardContent>
               </Card>
             ))}
           </div>
         ) : (
           <div className="text-center">
-            <p className="text-muted-foreground">该分类下暂无文章</p>
-            <Button asChild variant="outline" className="mt-4">
-              <Link href="/knowledge">查看全部文章</Link>
-            </Button>
+            <p className="text-[#78716c]">该分类下暂无文章</p>
+            <Link
+              href="/knowledge"
+              className="mt-4 inline-flex items-center rounded-md border border-[#e7e5e4] bg-white px-4 py-2 text-sm font-medium text-[#1c1917] transition-colors hover:bg-[#f9f7f2]"
+            >
+              查看全部文章
+            </Link>
           </div>
         )}
       </div>

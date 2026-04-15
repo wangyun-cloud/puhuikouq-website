@@ -75,13 +75,16 @@ export default async function KnowledgePage() {
       />
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-medical-blue via-medical-blue to-medical-blue-dark py-16 text-white md:py-24">
+      <section className="bg-[#f9f7f2] py-16 md:py-24">
         <div className="container">
           <div className="mx-auto max-w-3xl text-center">
-            <h1 className="mb-4 text-3xl font-bold md:text-4xl lg:text-5xl">
+            <p className="mb-3 text-sm font-medium tracking-wide text-[#e86a33]">
+              上海普惠口腔
+            </p>
+            <h1 className="mb-4 text-3xl font-semibold tracking-tight text-[#1c1917] md:text-4xl lg:text-5xl">
               口腔健康知识库
             </h1>
-            <p className="text-lg text-white/90 md:text-xl">
+            <p className="text-lg text-[#57534e] md:text-xl">
               科学的口腔健康科普，帮助您更好地了解牙齿保健与诊疗知识
             </p>
           </div>
