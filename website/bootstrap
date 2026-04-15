@@ -1,3 +1,5 @@
 #!/bin/bash
 export PATH="./.node/bin:$PATH"
-./.node/bin/node node_modules/next/dist/bin/next start -H 0.0.0.0 -p 9000
+export PORT=9000
+export HOSTNAME=0.0.0.0
+./.node/bin/node server.js
