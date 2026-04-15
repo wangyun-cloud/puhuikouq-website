@@ -37,7 +37,7 @@ services:
           command:
             - sh
             - bootstrap
-          port: 3000
+          port: 9000
       triggers:
         - name: httpTrigger
           type: http
